@@ -5,7 +5,7 @@
 package CapaPresentacion;
 
 import javax.swing.JOptionPane;
-
+//PRUEBA PARA VER SI CARGA BIEN 
 /**
  *
  * @author adoni
