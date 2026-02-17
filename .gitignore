@@ -1,0 +1,18 @@
+# compilados
+*.class
+
+# carpetas generadas
+/build/
+/dist/
+/nbbuild/
+/nbdist/
+
+# netbeans config local
+nbproject/private/
+
+# logs
+*.log
+
+# sistema
+.DS_Store
+Thumbs.db
