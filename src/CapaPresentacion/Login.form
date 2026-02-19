@@ -122,7 +122,7 @@
                       <Component id="BtnLogin1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="BtnLogin" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="126" max="32767" attributes="0"/>
+                  <EmptySpace pref="135" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
