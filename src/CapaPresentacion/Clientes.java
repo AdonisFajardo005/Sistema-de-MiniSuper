@@ -49,6 +49,8 @@ public class Clientes extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,14 +157,18 @@ public class Clientes extends javax.swing.JFrame {
         });
         jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 389, 183, -1));
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono usuario.png"))); // NOI18N
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, -1, -1));
-
-        jTextField4.setText("PONER LOS LOGOS DE CELULAR Y DIRECCION");
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo ubicacion.png"))); // NOI18N
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 295, 40, 50));
         jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo cedula icono.png"))); // NOI18N
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 40, 30));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono usuario.png"))); // NOI18N
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, -1, -1));
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo celular icono.png"))); // NOI18N
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 390, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -254,7 +260,9 @@ public class Clientes extends javax.swing.JFrame {
     private javax.swing.JButton BtnRegistrar;
     private javax.swing.JButton BtnVolverMenú;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
