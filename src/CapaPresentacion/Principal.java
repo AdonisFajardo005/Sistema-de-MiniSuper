@@ -4,6 +4,8 @@
  */
 package CapaPresentacion;
 
+import CapaModelo.Usuario;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,8 +17,17 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public Principal() {
+    Principal() {
+
+    }
+    private Usuario usuarioLogueado;
+
+    public Principal(Usuario usuario) {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.usuarioLogueado = usuario;
+        aplicarPermisos();
+
     }
 
     /**
@@ -32,7 +43,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnUsuarios = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         BtnLogin = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -56,11 +67,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 204));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn usuarios.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnUsuarios.setBackground(new java.awt.Color(204, 204, 204));
+        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn usuarios.png"))); // NOI18N
+        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnUsuariosActionPerformed(evt);
             }
         });
 
@@ -137,7 +148,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(301, 301, 301))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(133, 133, 133)
-                .addComponent(jButton1)
+                .addComponent(btnUsuarios)
                 .addGap(99, 99, 99)
                 .addComponent(jButton2)
                 .addGap(117, 117, 117)
@@ -172,7 +183,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2)
-                            .addComponent(jButton1)
+                            .addComponent(btnUsuarios)
                             .addComponent(jButton3)))
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(29, 29, 29)
@@ -201,6 +212,14 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void aplicarPermisos() {
+        if (usuarioLogueado.getRol().equalsIgnoreCase("Empleado")) {
+            btnUsuarios.setEnabled(false);
+        }
+        if (usuarioLogueado.getRol().equalsIgnoreCase("Administrador")) {
+            btnUsuarios.setEnabled(true);
+        }
+    }
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
 
         int cri = JOptionPane.showConfirmDialog(null, "¿DESEA CERRAR SESIÓN?");
@@ -215,46 +234,54 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnLoginActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Usuarios us = new Usuarios();
+    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
+        Usuarios us = new Usuarios(usuarioLogueado);
+        us.setExtendedState(JFrame.MAXIMIZED_BOTH);
         us.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnUsuariosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Productos p = new Productos();
+        Productos p = new Productos(usuarioLogueado);
+        p.setExtendedState(JFrame.MAXIMIZED_BOTH);
         p.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Clientes c = new Clientes();
+        Clientes c = new Clientes(usuarioLogueado);
+        c.setExtendedState(JFrame.MAXIMIZED_BOTH);
         c.setVisible(true);
         dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Proveedores p = new Proveedores();
+        Proveedores p = new Proveedores(usuarioLogueado);
+        p.setExtendedState(JFrame.MAXIMIZED_BOTH);
         p.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        Compras c = new Compras();
+        Compras c = new Compras(usuarioLogueado);
+        c.setExtendedState(JFrame.MAXIMIZED_BOTH);
         c.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        Ventas v = new Ventas();
+        Ventas v = new Ventas(usuarioLogueado);
+        v.setExtendedState(JFrame.MAXIMIZED_BOTH);
         v.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-       Reportes r = new Reportes();
-       r.setVisible(true);
-       dispose();
+        Reportes r = new Reportes(usuarioLogueado);
+        r.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        r.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
@@ -295,7 +322,7 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLogin;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnUsuarios;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

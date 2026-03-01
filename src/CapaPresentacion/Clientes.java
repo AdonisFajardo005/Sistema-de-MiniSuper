@@ -4,9 +4,16 @@
  */
 package CapaPresentacion;
 
+import CapaModelo.Cliente;
+import CapaModelo.Usuario;
+import CapaNegocio.ClienteService;
+import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 //PRUEBA PARA VER SI CARGA BIEN 
 // nueva prueba 
+
 /**
  *
  * @author adoni
@@ -16,8 +23,16 @@ public class Clientes extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public Clientes() {
+    private Usuario usuarioLogueado;
+
+    public Clientes(Usuario usuario) {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         initComponents();
+        limpiarCampos();
+        cargarTabla();
+        this.usuarioLogueado = usuario;
+
     }
 
     /**
@@ -34,20 +49,20 @@ public class Clientes extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtCelular = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
         BtnVolverMenú = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -76,7 +91,7 @@ public class Clientes extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
+        jPanel1.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -89,8 +104,8 @@ public class Clientes extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Dirección:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 303, -1, 30));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
+        jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -98,7 +113,7 @@ public class Clientes extends javax.swing.JFrame {
         jLabel7.setText("Celular:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, -1, 43));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -109,7 +124,12 @@ public class Clientes extends javax.swing.JFrame {
                 "Cédula", "Nombre", "Celular", "Direccion"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClientesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaClientes);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
 
@@ -122,12 +142,12 @@ public class Clientes extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 200, 183, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnModificar.setText(" ️Modificar");
+        BtnModificar.setText("Actualizar");
         BtnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnModificarActionPerformed(evt);
@@ -159,7 +179,7 @@ public class Clientes extends javax.swing.JFrame {
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo ubicacion.png"))); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 295, 40, 50));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
+        jPanel1.add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo cedula icono.png"))); // NOI18N
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 40, 30));
@@ -189,7 +209,8 @@ public class Clientes extends javax.swing.JFrame {
         int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
         if (cri == 0) {
             Principal p;
-            p = new Principal();
+            p = new Principal(usuarioLogueado);
+            p.setExtendedState(JFrame.MAXIMIZED_BOTH);
             p.setVisible(true);
             dispose();
 
@@ -199,60 +220,136 @@ public class Clientes extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        JOptionPane.showMessageDialog(this, "Modificado Correctamente");
+        if (tablaClientes.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
+            return;
+        }
+
+        ClienteService service = new ClienteService();
+
+        Cliente c = new Cliente();
+        c.setCedula(txtCedula.getText());
+        c.setNombre(txtNombre.getText());
+        c.setCelular(txtCelular.getText());
+        c.setDireccion(txtDireccion.getText());
+
+        boolean actualizado = service.actualizarCliente(c);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente");
+
+            limpiarCampos();
+            txtCedula.setEditable(true); // volvemos a habilitar
+            cargarTabla(); // 🔥 refresca JTable
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar");
+        }
+
+
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        JOptionPane.showMessageDialog(this, "Eliminado Correctamente");
+
+        // 🔥 Verificar que haya una fila seleccionada
+        if (tablaClientes.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
+            return;
+        }
+
+        String cedula = txtCedula.getText();
+
+        // 🔥 Confirmación
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar este cliente?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+
+            ClienteService service = new ClienteService();
+            boolean eliminado = service.eliminarCliente(cedula);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente");
+
+                limpiarCampos();
+                cargarTabla();
+                txtCedula.setEditable(true);// 🔥 refresca JTable
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar");
+            }
+        }
+
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
+    private void limpiarCampos() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtCelular.setText("");
+        txtDireccion.setText("");
+    }
+
+    private void cargarTabla() {
+
+        ClienteService service = new ClienteService();
+        List<Cliente> lista = service.listarClientes();
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaClientes.getModel();
+        modelo.setRowCount(0); // limpia la tabla
+
+        for (Cliente c : lista) {
+            modelo.addRow(new Object[]{
+                c.getCedula(),
+                c.getNombre(),
+                c.getCelular(),
+                c.getDireccion()
+            });
+        }
+    }
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+        try {
+            ClienteService service = new ClienteService();
+
+            Cliente c = new Cliente();
+            c.setCedula(txtCedula.getText());
+            c.setNombre(txtNombre.getText());
+            c.setCelular(txtCelular.getText());
+            c.setDireccion(txtDireccion.getText());
+
+            service.guardarCliente(c);
+            JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+            limpiarCampos();
+            cargarTabla();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar");
+        }
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
+
+    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+        int fila = tablaClientes.getSelectedRow();
+
+        if (fila >= 0) {
+
+            txtCedula.setText(tablaClientes.getValueAt(fila, 0).toString());
+            txtNombre.setText(tablaClientes.getValueAt(fila, 1).toString());
+            txtCelular.setText(tablaClientes.getValueAt(fila, 2).toString());
+            txtDireccion.setText(tablaClientes.getValueAt(fila, 3).toString());
+
+            txtCedula.setEditable(false);
+        }
+    }//GEN-LAST:event_tablaClientesMouseClicked
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Clientes().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnEliminar;
@@ -272,10 +369,10 @@ public class Clientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tablaClientes;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

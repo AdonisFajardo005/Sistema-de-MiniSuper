@@ -4,6 +4,10 @@
  */
 package CapaPresentacion;
 
+import CapaModelo.Usuario;
+import CapaNegocio.UsuarioService;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +21,10 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        txtPassword.setText("Ingrese su contraseña");
+        txtPassword.setEchoChar((char) 0);
     }
 
     /**
@@ -34,8 +42,8 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtUsuario = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         BtnLogin = new javax.swing.JButton();
@@ -66,9 +74,27 @@ public class Login extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("_________________________________________________________________________________________________________");
 
-        jTextField1.setText("Ingrese su usuario");
+        txtUsuario.setForeground(new java.awt.Color(153, 153, 153));
+        txtUsuario.setText("Ingrese su usuario");
+        txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUsuarioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsuarioFocusLost(evt);
+            }
+        });
 
-        jPasswordField1.setText("jPasswordField1");
+        txtPassword.setForeground(new java.awt.Color(153, 153, 153));
+        txtPassword.setText("jPasswordField1");
+        txtPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtPasswordFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPasswordFocusLost(evt);
+            }
+        });
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono usuario.png"))); // NOI18N
 
@@ -114,8 +140,8 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(jLabel4)))
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(441, 441, 441)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -148,12 +174,12 @@ public class Login extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel6))
                         .addGap(40, 40, 40)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(100, 100, 100)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnLogin1)
@@ -176,11 +202,32 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
-        JOptionPane.showMessageDialog(this, "Acceso confirmado");
-        
-        Principal p = new Principal();
-        p.setVisible(true);
-        dispose();
+
+        String usuario = txtUsuario.getText();
+        String password = new String(txtPassword.getPassword());
+
+        if (usuario.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese usuario y contraseña");
+            return;
+        }
+
+        UsuarioService service = new UsuarioService();
+        Usuario u = service.login(usuario, password);
+
+        if (u != null) {
+
+            JOptionPane.showMessageDialog(this, "Bienvenido " + u.getNombre());
+
+            Principal menu = new Principal(u); // 🔥 le enviamos el usuario
+            menu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            menu.setVisible(true);
+
+            this.dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+        }
+
     }//GEN-LAST:event_BtnLoginActionPerformed
 
     private void BtnLogin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLogin1ActionPerformed
@@ -190,6 +237,35 @@ public class Login extends javax.swing.JFrame {
             dispose();
         }
     }//GEN-LAST:event_BtnLogin1ActionPerformed
+
+    private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
+        // TODO add your handling code here:
+        if (txtUsuario.getText().isEmpty()) {
+            txtUsuario.setText("Ingrese su usuario");
+        }
+    }//GEN-LAST:event_txtUsuarioFocusLost
+
+    private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusGained
+        if (txtUsuario.getText().equals("Ingrese su usuario")) {
+            txtUsuario.setText("");
+        }
+    }//GEN-LAST:event_txtUsuarioFocusGained
+
+    private void txtPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPasswordFocusGained
+
+        if (String.valueOf(txtPassword.getPassword()).equals("Ingrese su contraseña")) {
+            txtPassword.setText("");
+            txtPassword.setEchoChar('•'); // Activa los puntitos
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordFocusGained
+
+    private void txtPasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPasswordFocusLost
+        // TODO add your handling code here:
+        if (String.valueOf(txtPassword.getPassword()).isEmpty()) {
+            txtPassword.setText("Ingrese su contraseña");
+            txtPassword.setEchoChar((char) 0); // Quita los puntitos
+        }
+    }//GEN-LAST:event_txtPasswordFocusLost
 
     /**
      * @param args the command line arguments
@@ -237,7 +313,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
