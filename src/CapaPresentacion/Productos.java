@@ -4,8 +4,14 @@
  */
 package CapaPresentacion;
 
+import CapaModelo.Producto;
 import CapaModelo.Usuario;
+import CapaNegocio.ProductoService;
+import java.util.List;
+
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.TabableView;
 
 /**
  *
@@ -16,11 +22,17 @@ public class Productos extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-      private Usuario usuarioLogueado;
+    private Usuario usuarioLogueado;
+
     public Productos(Usuario usuario) {
         initComponents();
-         this.usuarioLogueado = usuario;
-         
+        this.usuarioLogueado = usuario;
+        cargarTabla();
+
+    }
+
+    private Productos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -37,14 +49,14 @@ public class Productos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtCantidadEnStock = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablaProductos = new javax.swing.JTable();
         BtnVolverMenú = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
@@ -52,7 +64,7 @@ public class Productos extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,7 +91,7 @@ public class Productos extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
+        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -92,8 +104,8 @@ public class Productos extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Precio:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 290, -1, 43));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
+        jPanel1.add(txtCantidadEnStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -101,7 +113,7 @@ public class Productos extends javax.swing.JFrame {
         jLabel7.setText("Cant. Stock:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 390, -1, 43));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -112,7 +124,7 @@ public class Productos extends javax.swing.JFrame {
                 "Código", "Nombre", "Cantidad Stock", "Precio"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablaProductos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
 
@@ -168,7 +180,7 @@ public class Productos extends javax.swing.JFrame {
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo cantidad stock icono.png"))); // NOI18N
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 390, -1, -1));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
+        jPanel1.add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo código icono.png"))); // NOI18N
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, -1, -1));
@@ -211,17 +223,57 @@ public class Productos extends javax.swing.JFrame {
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+        try {
+            ProductoService service = new ProductoService();
+            Producto p = new Producto();
+            p.setCodigo(txtCodigo.getText());
+            p.setNombre(txtNombre.getText());
+            p.setCantidadEnStock(Integer.parseInt(txtCantidadEnStock.getText()));
+            p.setPrecio(new java.math.BigDecimal(txtPrecio.getText()));
+            service.guardarProductos(p);
+            JOptionPane.showMessageDialog(this, "Producto Registrado Correctamente");
+            limpiarCampos();
+            cargarTabla();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: Verifica que la cantidad y el precio sean números válidos");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar el producto");
+        }
+
+    }
+
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtCantidadEnStock.setText("");
+        txtPrecio.setText("");
+
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
-    
+    private void cargarTabla() {
+        ProductoService service = new ProductoService();
+        List<Producto> lista = service.listarProducto();
+
+        DefaultTableModel modelo = (DefaultTableModel) TablaProductos.getModel();
+        modelo.setRowCount(0); // limpia la tabla
+
+        for (Producto c : lista) {
+            modelo.addRow(new Object[]{
+                c.getCodigo(),
+                c.getNombre(),
+                c.getCantidadEnStock(),
+                c.getPrecio()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnRegistrar;
     private javax.swing.JButton BtnVolverMenú;
+    private javax.swing.JTable TablaProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -235,10 +287,9 @@ public class Productos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField txtCantidadEnStock;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,61 +4,66 @@
  */
 package CapaModelo;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author adoni
  */
-public class Productos {
+public class Producto {
 
     // Atributos
     private String codigo;
     private String nombre;
     private int cantidadEnStock;
-    private double precio;
+    private BigDecimal precio;
 
     // Constructor vacío
-    public Productos() {
+    public Producto() {
     }
 
     // Constructor con todos los atributos
-    public Productos(String codigo, String nombre, int cantidadEnStock, double precio) {
+
+    public Producto(String codigo, String nombre, int cantidadEnStock, BigDecimal precio) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.cantidadEnStock = cantidadEnStock;
         this.precio = precio;
     }
+    
 
     // Getters
+
     public String getCodigo() {
         return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public int getCantidadEnStock() {
-        return cantidadEnStock;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    // Setters
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getCantidadEnStock() {
+        return cantidadEnStock;
     }
 
     public void setCantidadEnStock(int cantidadEnStock) {
         this.cantidadEnStock = cantidadEnStock;
     }
 
-    public void setPrecio(double precio) {
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
+    
 }
