@@ -58,41 +58,58 @@ public class ProveedoresDAO {
 
         return lista;
     }
-    
-     public boolean actualizarProveedores(Proveedor c) {
 
-    String sql = "UPDATE Proveedores SET Nombre=?, Celular=?, Empresa=? WHERE Cedula=?";
+    public boolean actualizarProveedores(Proveedor c) {
 
-    try (Connection con = Conexion.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "UPDATE Proveedores SET Nombre=?, Celular=?, Empresa=? WHERE Cedula=?";
 
-        ps.setString(1, c.getNombre());
-        ps.setString(2, c.getCelular());
-        ps.setString(3, c.getEmpresa());
-        ps.setString(4, c.getCedula());
+        try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        ps.executeUpdate();
-        return true;
+            ps.setString(1, c.getNombre());
+            ps.setString(2, c.getCelular());
+            ps.setString(3, c.getEmpresa());
+            ps.setString(4, c.getCedula());
 
-    } catch (Exception e) {
-        System.out.println("Error actualizar: " + e.getMessage());
-        return false;
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error actualizar: " + e.getMessage());
+            return false;
+        }
     }
-}
-     public boolean eliminarProveedor(String cedula) {
 
-    String sql = "DELETE FROM Proveedores WHERE Cedula = ?";
+    public boolean eliminarProveedor(String cedula) {
 
-    try (Connection con = Conexion.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "DELETE FROM Proveedores WHERE Cedula = ?";
 
-        ps.setString(1, cedula);
-        ps.executeUpdate();
-        return true;
+        try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-    } catch (Exception e) {
-        System.out.println("Error eliminar: " + e.getMessage());
-        return false;
+            ps.setString(1, cedula);
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error eliminar: " + e.getMessage());
+            return false;
+        }
     }
-}
+
+    public List<String> listarNombres() {
+
+        List<String> lista = new ArrayList<>();
+        String sql = "SELECT Nombre FROM Proveedores";
+
+        try (Connection con = Conexion.getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                lista.add(rs.getString("Nombre"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error listar nombres proveedores: " + e.getMessage());
+        }
+
+        return lista;
+    }
 }

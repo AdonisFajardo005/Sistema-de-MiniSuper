@@ -164,7 +164,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1166, 389, 183, -1));
+        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 390, 183, -1));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -307,6 +307,7 @@ public class Productos extends javax.swing.JFrame {
     }
 
     private void limpiarCampos() {
+        
         txtCodigo.setText("");
         txtNombre.setText("");
         txtCantidadEnStock.setText("");

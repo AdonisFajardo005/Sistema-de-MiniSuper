@@ -9,12 +9,13 @@ package CapaModelo;
  * @author adoni
  */
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Compra {
 
     // Atributos
     private int idCompra;
-    private LocalDate fecha;
+    private Date fecha;
     private String nombreProducto;
     private int cantidad;
     private double precioCompra;
@@ -25,7 +26,7 @@ public class Compra {
     }
 
     // Constructor sin ID (cuando vas a insertar)
-    public Compra(LocalDate fecha, String nombreProducto, int cantidad, double precioCompra, String proveedor) {
+    public Compra(Date fecha, String nombreProducto, int cantidad, double precioCompra, String proveedor) {
         this.fecha = fecha;
         this.nombreProducto = nombreProducto;
         this.cantidad = cantidad;
@@ -34,7 +35,7 @@ public class Compra {
     }
 
     // Constructor con ID (cuando traes datos de la BD)
-    public Compra(int idCompra, LocalDate fecha, String nombreProducto, int cantidad, double precioCompra, String proveedor) {
+    public Compra(int idCompra, Date fecha, String nombreProducto, int cantidad, double precioCompra, String proveedor) {
         this.idCompra = idCompra;
         this.fecha = fecha;
         this.nombreProducto = nombreProducto;
@@ -48,7 +49,7 @@ public class Compra {
         return idCompra;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
@@ -73,7 +74,7 @@ public class Compra {
         this.idCompra = idCompra;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

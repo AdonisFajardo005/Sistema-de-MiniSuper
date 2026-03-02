@@ -61,4 +61,10 @@ public class Proveedor {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
+
+    @Override
+    public String toString() {
+        return nombre; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
 }
