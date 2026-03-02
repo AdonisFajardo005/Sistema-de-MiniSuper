@@ -325,6 +325,7 @@ public class Clientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Registrado Correctamente");
             limpiarCampos();
             cargarTabla();
+            txtCedula.setEditable(true);
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al registrar");

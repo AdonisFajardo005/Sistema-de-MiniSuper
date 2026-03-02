@@ -124,6 +124,11 @@ public class Productos extends javax.swing.JFrame {
                 "Código", "Nombre", "Cantidad Stock", "Precio"
             }
         ));
+        TablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TablaProductos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
@@ -142,7 +147,7 @@ public class Productos extends javax.swing.JFrame {
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnModificar.setText(" ️Modificar");
+        BtnModificar.setText("Actualizar");
         BtnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnModificarActionPerformed(evt);
@@ -214,11 +219,70 @@ public class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        JOptionPane.showMessageDialog(this, "Modificado Correctamente");
+
+        if (TablaProductos.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla");
+            return;
+        }
+
+        ProductoService service = new ProductoService();
+
+        Producto p = new Producto();
+        p.setNombre(txtNombre.getText());
+        p.setCodigo(txtCodigo.getText()); // 🔥 PRIMARY KEY
+        p.setCantidadEnStock(Integer.parseInt(txtCantidadEnStock.getText()));
+        p.setPrecio(new java.math.BigDecimal(txtPrecio.getText())); // 🔥 DECIMAL
+
+        boolean actualizado = service.actualizarProducto(p);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Producto actualizado correctamente");
+
+            limpiarCampos();
+            txtCodigo.setEditable(true); // 🔥 volvemos a habilitar
+            cargarTabla(); // 🔥 refresca JTable
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar");
+        }
+
+
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        JOptionPane.showMessageDialog(this, "Eliminado Correctamente");
+       // 🔥 Verificar que haya una fila seleccionada
+        if (TablaProductos.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un Producto de la tabla");
+            return;
+        }
+
+        String Codigo = txtCodigo.getText();
+
+        // 🔥 Confirmación
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar este Producto?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+
+            ProductoService service = new ProductoService();
+            boolean eliminado = service.eliminarProducto(Codigo);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "Producto eliminado correctamente");
+
+                limpiarCampos();
+                cargarTabla();
+                txtCodigo.setEditable(true);// 🔥 refresca JTable
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar");
+            }
+        }
+
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
@@ -250,6 +314,20 @@ public class Productos extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
+
+    private void TablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaProductosMouseClicked
+        int fila = TablaProductos.getSelectedRow();
+
+        if (fila >= 0) {
+
+            txtCodigo.setText(TablaProductos.getValueAt(fila, 0).toString());
+            txtNombre.setText(TablaProductos.getValueAt(fila, 1).toString());
+            txtCantidadEnStock.setText(TablaProductos.getValueAt(fila, 2).toString());
+            txtPrecio.setText(TablaProductos.getValueAt(fila, 3).toString());
+
+            txtCodigo.setEditable(false);
+        }
+    }//GEN-LAST:event_TablaProductosMouseClicked
 
     private void cargarTabla() {
         ProductoService service = new ProductoService();

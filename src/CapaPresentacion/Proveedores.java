@@ -4,10 +4,15 @@
  */
 package CapaPresentacion;
 
+import CapaModelo.Proveedor;
 import CapaModelo.Usuario;
+import CapaNegocio.ProveedorService;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 //PRUEBA PARA VER SI CARGA BIEN 
 // nueva prueba 
+
 /**
  *
  * @author adoni
@@ -17,10 +22,12 @@ public class Proveedores extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-     private Usuario usuarioLogueado;
+    private Usuario usuarioLogueado;
+
     public Proveedores(Usuario usuario) {
         initComponents();
         this.usuarioLogueado = usuario;
+        cargarTabla();
     }
 
     /**
@@ -37,20 +44,20 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtEmpresa = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtCelular = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaProveedores = new javax.swing.JTable();
         BtnVolverMenú = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -79,7 +86,7 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
+        jPanel1.add(txtEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -92,8 +99,8 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Empresa: ");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 303, -1, 30));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
+        jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -101,7 +108,7 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel7.setText("Teléfono:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 390, -1, 43));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -112,7 +119,12 @@ public class Proveedores extends javax.swing.JFrame {
                 "Cédula", "Nombre", "Celular", "Empresa"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProveedoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaProveedores);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
 
@@ -130,7 +142,7 @@ public class Proveedores extends javax.swing.JFrame {
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnModificar.setText(" ️Modificar");
+        BtnModificar.setText("Actualizar");
         BtnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnModificarActionPerformed(evt);
@@ -162,7 +174,7 @@ public class Proveedores extends javax.swing.JFrame {
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo empresa.png"))); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 290, 50, 60));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
+        jPanel1.add(txtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo cedula icono.png"))); // NOI18N
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 300, 40, 30));
@@ -202,19 +214,131 @@ public class Proveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        JOptionPane.showMessageDialog(this, "Modificado Correctamente");
+        if (tablaProveedores.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un proveedor de la tabla");
+            return;
+        }
+
+        ProveedorService service = new ProveedorService();
+
+        Proveedor c = new Proveedor();
+        c.setCedula(txtCedula.getText());
+        c.setNombre(txtNombre.getText());
+        c.setCelular(txtCelular.getText());
+        c.setEmpresa(txtEmpresa.getText());
+
+        boolean actualizado = service.actualizarProveedor(c);
+
+        if (actualizado) {
+            JOptionPane.showMessageDialog(this, "Proveedor actualizado correctamente");
+
+            limpiarCampos();
+            txtCedula.setEditable(true); // volvemos a habilitar
+            cargarTabla(); // 🔥 refresca JTable
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar");
+        }
+
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        JOptionPane.showMessageDialog(this, "Eliminado Correctamente");
+        // 🔥 Verificar que haya una fila seleccionada
+        if (tablaProveedores.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un Proveedor de la tabla");
+            return;
+        }
+
+        String cedula = txtCedula.getText();
+
+        // 🔥 Confirmación
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar este Proveedor?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+
+            ProveedorService service = new ProveedorService();
+            boolean eliminado = service.eliminarProveedor(cedula);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente");
+
+                limpiarCampos();
+                cargarTabla();
+                txtCedula.setEditable(true);// 🔥 refresca JTable
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar");
+            }
+        }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+        try {
+            ProveedorService service = new ProveedorService();
+
+            Proveedor c = new Proveedor();
+            c.setCedula(txtCedula.getText());
+            c.setNombre(txtNombre.getText());
+            c.setCelular(txtCelular.getText());
+            c.setEmpresa(txtEmpresa.getText());
+
+            service.guardarProveedor(c);
+            JOptionPane.showMessageDialog(this, "Proveedor Registrado Correctamente");
+            limpiarCampos();
+            cargarTabla();
+            txtCedula.setEditable(true);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar");
+        }
+
+    }
+
+    private void cargarTabla() {
+        ProveedorService service = new ProveedorService();
+        List<Proveedor> lista = service.listarProveedores();
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
+        modelo.setRowCount(0); // limpia la tabla
+
+        for (Proveedor c : lista) {
+            modelo.addRow(new Object[]{
+                c.getCedula(),
+                c.getNombre(),
+                c.getCelular(),
+                c.getEmpresa()
+            });
+        }
+
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
+    private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
+         int fila = tablaProveedores.getSelectedRow();
+
+        if (fila >= 0) {
+
+            txtCedula.setText(tablaProveedores.getValueAt(fila, 0).toString());
+            txtNombre.setText(tablaProveedores.getValueAt(fila, 1).toString());
+            txtCelular.setText(tablaProveedores.getValueAt(fila, 2).toString());
+            txtEmpresa.setText(tablaProveedores.getValueAt(fila, 3).toString());
+
+            txtCedula.setEditable(false);
+        }
+    }//GEN-LAST:event_tablaProveedoresMouseClicked
+
+    private void limpiarCampos() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtCelular.setText("");
+        txtEmpresa.setText("");
+    }
     /**
      * @param args the command line arguments
      */
@@ -237,10 +361,10 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tablaProveedores;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JTextField txtEmpresa;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

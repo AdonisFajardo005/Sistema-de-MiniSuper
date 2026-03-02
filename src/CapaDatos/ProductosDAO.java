@@ -52,4 +52,83 @@ public class ProductosDAO {
         }
         return lista;
     }
+
+    public boolean actualizarProducto(Producto p) {
+
+        String sql = "UPDATE Productos SET Nombre=?, CantidadEnStock=?, Precio=? WHERE Codigo=?";
+
+        try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, p.getNombre());
+            ps.setInt(2, p.getCantidadEnStock());
+            ps.setBigDecimal(3, p.getPrecio());
+            ps.setString(4, p.getCodigo());
+
+            ps.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("Error actualizar: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean eliminarProducto(String Codigo) {
+
+    String sql = "DELETE FROM Productos WHERE Codigo = ?";
+
+    try (Connection con = Conexion.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, Codigo);
+        ps.executeUpdate();
+        return true;
+
+    } catch (Exception e) {
+        System.out.println("Error eliminar: " + e.getMessage());
+        return false;
+    }
+}
+    public Producto buscarPorCodigo(String codigo) {
+    String sql = "SELECT * FROM Productos WHERE Codigo = ?";
+    
+    try (Connection con = Conexion.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setString(1, codigo);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Producto p = new Producto();
+            p.setCodigo(rs.getString("Codigo"));
+            p.setNombre(rs.getString("Nombre"));
+            p.setCantidadEnStock(rs.getInt("CantidadEnStock"));
+            p.setPrecio(rs.getBigDecimal("Precio"));
+            return p;
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+    public boolean actualizarStock(String codigo, int nuevaCantidad) {
+    String sql = "UPDATE Productos SET CantidadEnStock = ? WHERE Codigo = ?";
+
+    try (Connection con = Conexion.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, nuevaCantidad);
+        ps.setString(2, codigo);
+
+        return ps.executeUpdate() > 0;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+    
+
 }

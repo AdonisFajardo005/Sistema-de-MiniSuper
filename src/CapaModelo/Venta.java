@@ -8,6 +8,7 @@ package CapaModelo;
  *
  * @author adoni
  */
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Venta {
@@ -16,14 +17,14 @@ public class Venta {
     private LocalDate fecha;
     private String nombreProducto;
     private int cantidad;
-    private double precioVenta;
+    private BigDecimal precioVenta;
 
     // Constructor vacío
     public Venta() {
     }
 
     // Constructor para insertar (sin ID)
-    public Venta(LocalDate fecha, String nombreProducto, int cantidad, double precioVenta) {
+    public Venta(LocalDate fecha, String nombreProducto, int cantidad, BigDecimal precioVenta) {
         this.fecha = fecha;
         this.nombreProducto = nombreProducto;
         this.cantidad = cantidad;
@@ -31,7 +32,7 @@ public class Venta {
     }
 
     // Constructor para mostrar ventas (con ID)
-    public Venta(int idVenta, LocalDate fecha, String nombreProducto, int cantidad, double precioVenta) {
+    public Venta(int idVenta, LocalDate fecha, String nombreProducto, int cantidad, BigDecimal precioVenta) {
         this.idVenta = idVenta;
         this.fecha = fecha;
         this.nombreProducto = nombreProducto;
@@ -40,6 +41,7 @@ public class Venta {
     }
 
     // Getters y Setters
+
     public int getIdVenta() {
         return idVenta;
     }
@@ -72,11 +74,12 @@ public class Venta {
         this.cantidad = cantidad;
     }
 
-    public double getPrecioVenta() {
+    public BigDecimal getPrecioVenta() {
         return precioVenta;
     }
 
-    public void setPrecioVenta(double precioVenta) {
+    public void setPrecioVenta(BigDecimal precioVenta) {
         this.precioVenta = precioVenta;
     }
+    
 }

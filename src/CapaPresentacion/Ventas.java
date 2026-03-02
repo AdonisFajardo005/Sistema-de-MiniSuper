@@ -4,10 +4,31 @@
  */
 package CapaPresentacion;
 
+import java.io.File;
+import CapaModelo.Producto;
 import CapaModelo.Usuario;
+import CapaNegocio.ProductoService;
+import CapaNegocio.VentaService;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 //PRUEBA PARA VER SI CARGA BIEN 
 // nueva prueba 
+
 /**
  *
  * @author adoni
@@ -17,10 +38,14 @@ public class Ventas extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-     private Usuario usuarioLogueado; 
+    private Usuario usuarioLogueado;
+
     public Ventas(Usuario usuario) {
         initComponents();
         this.usuarioLogueado = usuario;
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+        modelo.setRowCount(0);
+
     }
 
     /**
@@ -37,21 +62,16 @@ public class Ventas extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaVentas = new javax.swing.JTable();
         BtnVolverMenú = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
-        BtnEliminar = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtIdProducto = new javax.swing.JTextField();
+        lblTotal = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,49 +90,28 @@ public class Ventas extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 102, 204));
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel3.setText("Id Venta: ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 290, 140, 43));
+        jLabel3.setText("Id Producto: ");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 190, 50));
 
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 350, 260, 35));
 
-        jLabel4.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel4.setText("Fecha:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, -1, 40));
-
-        jLabel6.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel6.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel6.setText("Precio Venta:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 350, 200, 30));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
-
-        jLabel7.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel7.setText("Nombre producto:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(78, 390, 260, 43));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id Venta", "Fecha", "Nombre Producto", "Cantidad", "Costo total"
+                "Código", "Producto", "Cantidad", "Precio"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaVentas);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 920, 250));
 
         BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
         BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -125,46 +124,48 @@ public class Ventas extends javax.swing.JFrame {
         });
         jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
 
-        BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
+        BtnModificar.setBackground(new java.awt.Color(0, 153, 51));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnModificar.setText(" ️Modificar");
+        BtnModificar.setText("Confirmar Venta");
         BtnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 410, 183, -1));
-
-        BtnEliminar.setBackground(new java.awt.Color(255, 0, 0));
-        BtnEliminar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        BtnEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnEliminar.setText("Eliminar");
-        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 410, 183, -1));
+        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 630, 210, 50));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnRegistrar.setText("Registrar");
+        BtnRegistrar.setText("+ Agregar");
         BtnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 410, 183, -1));
-        jPanel1.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 300, 183, -1));
+        jPanel1.add(txtIdProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 260, 35));
 
-        jLabel8.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel8.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel8.setText("Cantidad: ");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 303, -1, 30));
-        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
+        lblTotal.setBackground(new java.awt.Color(0, 102, 204));
+        lblTotal.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        lblTotal.setForeground(new java.awt.Color(0, 102, 204));
+        lblTotal.setText("0.00");
+        lblTotal.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 640, 220, 30));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 300, 260, 35));
+
+        jLabel9.setBackground(new java.awt.Color(0, 102, 204));
+        jLabel9.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 102, 204));
+        jLabel9.setText("Cantidad: ");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 300, -1, 30));
+
+        jLabel10.setBackground(new java.awt.Color(0, 102, 204));
+        jLabel10.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 102, 204));
+        jLabel10.setText("TOTAL: ");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 640, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,12 +175,31 @@ public class Ventas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void calcularTotal() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+        BigDecimal totalGeneral = BigDecimal.ZERO;
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            Object precioObj = modelo.getValueAt(i, 3);
+
+            if (precioObj != null) {
+                BigDecimal precio = new BigDecimal(precioObj.toString());
+                totalGeneral = totalGeneral.add(precio);
+            }
+        }
+
+        lblTotal.setText(totalGeneral.toString());
+    }
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
         int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
@@ -195,43 +215,237 @@ public class Ventas extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
 
     private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        JOptionPane.showMessageDialog(this, "Modificado Correctamente");
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+
+        // Validar que haya productos
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay productos en la venta");
+            return;
+        }
+
+        ProductoService productoService = new ProductoService();
+        VentaService ventaService = new VentaService();
+
+        try {
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+
+                Object codObj = modelo.getValueAt(i, 0);
+                Object nomObj = modelo.getValueAt(i, 1);
+                Object cantObj = modelo.getValueAt(i, 2);
+                Object precioObj = modelo.getValueAt(i, 3);
+
+                // Validar que no haya celdas vacías
+                if (codObj == null || nomObj == null || cantObj == null || precioObj == null) {
+                    continue; // saltar fila defectuosa
+                }
+
+                String codigo = codObj.toString();
+                String nombre = nomObj.toString();
+                int cantidad = Integer.parseInt(cantObj.toString());
+                BigDecimal precioTotal = new BigDecimal(precioObj.toString());
+
+                // Guardar venta
+                ventaService.guardarVenta(nombre, cantidad, precioTotal);
+
+                // Descontar stock
+                productoService.descontarStock(codigo, cantidad);
+            }
+            int opcion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Desea generar factura?",
+                    "Factura",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                generarFactura();
+            }
+
+            // Limpiar tabla después de confirmar
+            modelo.setRowCount(0);
+            lblTotal.setText("0.00");
+
+            JOptionPane.showMessageDialog(this, "Venta realizada correctamente");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al procesar la venta");
+        }
+
     }//GEN-LAST:event_BtnModificarActionPerformed
 
-    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        JOptionPane.showMessageDialog(this, "Eliminado Correctamente");
-    }//GEN-LAST:event_BtnEliminarActionPerformed
+    private void generarFactura() {
 
+        try {
+
+            // ===== RUTA DONDE SE GUARDARÁ =====
+            String carpeta = "C:\\Users\\adoni\\OneDrive\\Documentos\\INGENIERIA\\ANÁLISIS Y DISEÑO DE SISTEMAS II\\FACTURAS MINISUPER ZONA AZUL\\";
+            File directorio = new File(carpeta);
+
+            if (!directorio.exists()) {
+                directorio.mkdirs();
+            }
+
+            String nombreArchivo = "Factura_" + System.currentTimeMillis() + ".pdf";
+            String rutaCompleta = carpeta + nombreArchivo;
+
+            Document document = new Document(PageSize.A4, 36, 36, 54, 36);
+            PdfWriter.getInstance(document, new FileOutputStream(rutaCompleta));
+
+            document.open();
+
+            // ===== FUENTES =====
+            Font tituloFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
+            Font normalFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
+            Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+
+            // ===== ENCABEZADO =====
+            Paragraph titulo = new Paragraph("MINI SUPER ZONA AZUL", tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+
+            Paragraph info = new Paragraph("Nicoya, Guanacaste\nTel: 6358-1046\n\n", normalFont);
+            info.setAlignment(Element.ALIGN_CENTER);
+            document.add(info);
+
+            document.add(new Paragraph("Factura N°: " + System.currentTimeMillis(), boldFont));
+            document.add(new Paragraph("Fecha: " + LocalDateTime.now(), normalFont));
+            document.add(new Paragraph("\n"));
+
+            // ===== TABLA =====
+            PdfPTable tabla = new PdfPTable(5);
+            tabla.setWidthPercentage(100);
+            tabla.setSpacingBefore(10f);
+            tabla.setWidths(new float[]{2, 4, 2, 2, 2});
+
+            String[] headers = {"Código", "Producto", "Cantidad", "Precio Unit.", "Total"};
+
+            for (String header : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(header, boldFont));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                tabla.addCell(cell);
+            }
+
+            DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+
+            BigDecimal subtotal = BigDecimal.ZERO;
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+
+                if (modelo.getValueAt(i, 0) == null) {
+                    continue;
+                }
+
+                String codigo = modelo.getValueAt(i, 0).toString();
+                String nombre = modelo.getValueAt(i, 1).toString();
+                int cantidad = Integer.parseInt(modelo.getValueAt(i, 2).toString());
+                BigDecimal total = new BigDecimal(modelo.getValueAt(i, 3).toString());
+
+                BigDecimal precioUnitario = total.divide(new BigDecimal(cantidad), 2, RoundingMode.HALF_UP);
+
+                subtotal = subtotal.add(total);
+
+                tabla.addCell(codigo);
+                tabla.addCell(nombre);
+                tabla.addCell(String.valueOf(cantidad));
+                tabla.addCell("₡ " + precioUnitario);
+                tabla.addCell("₡ " + total);
+            }
+
+            document.add(tabla);
+            document.add(new Paragraph("\n"));
+
+            // ===== TOTALES =====
+            BigDecimal iva = subtotal.multiply(new BigDecimal("0.13"));
+            BigDecimal totalFinal = subtotal.add(iva);
+
+            Paragraph subtotalP = new Paragraph("Subtotal: ₡ " + subtotal, normalFont);
+            subtotalP.setAlignment(Element.ALIGN_RIGHT);
+
+            Paragraph ivaP = new Paragraph("IVA (13%): ₡ " + iva, normalFont);
+            ivaP.setAlignment(Element.ALIGN_RIGHT);
+
+            Paragraph totalP = new Paragraph("TOTAL A PAGAR: ₡ " + totalFinal,
+                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD));
+            totalP.setAlignment(Element.ALIGN_RIGHT);
+
+            document.add(subtotalP);
+            document.add(ivaP);
+            document.add(totalP);
+
+            document.add(new Paragraph("\n\nGracias por su compra!", tituloFont));
+
+            document.close();
+
+            // ===== ABRIR AUTOMÁTICAMENTE =====
+            File file = new File(rutaCompleta);
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            }
+
+            JOptionPane.showMessageDialog(this, "Factura generada y guardada\n" );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al generar factura");
+        }
+    }
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
+        String codigo = txtIdProducto.getText();
+        int cantidad = Integer.parseInt(txtCantidad.getText());
 
-        JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+        ProductoService service = new ProductoService();
+        Producto p = service.buscarProducto(codigo);
+
+        if (p == null) {
+            JOptionPane.showMessageDialog(this, "Producto no existe");
+            return;
+        }
+
+        if (cantidad > p.getCantidadEnStock()) {
+            JOptionPane.showMessageDialog(this, "Stock insuficiente");
+            return;
+        }
+
+        BigDecimal precioTotal = p.getPrecio().multiply(new BigDecimal(cantidad));
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+
+        modelo.addRow(new Object[]{
+            p.getCodigo(),
+            p.getNombre(),
+            cantidad,
+            precioTotal
+        });
+
+        calcularTotal();
+        txtIdProducto.setText("");
+        txtCantidad.setText("");
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnRegistrar;
     private javax.swing.JButton BtnVolverMenú;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JTable tablaVentas;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtIdProducto;
     // End of variables declaration//GEN-END:variables
 }

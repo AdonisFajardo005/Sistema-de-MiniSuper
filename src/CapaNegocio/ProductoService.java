@@ -15,11 +15,35 @@ import java.util.List;
 public class ProductoService {
 
     private ProductosDAO dao = new ProductosDAO();
-    
+
     public boolean guardarProductos(Producto p) {
         return dao.InsertarProdcutos(p);
     }
-     public List<Producto> listarProducto() {
+
+    public List<Producto> listarProducto() {
         return dao.listarProductos();
     }
+
+    public boolean actualizarProducto(Producto p) {
+        return dao.actualizarProducto(p);
+    }
+    
+     public boolean eliminarProducto(String Codigo) {
+    return dao.eliminarProducto(Codigo);
+}
+     public Producto buscarProducto(String codigo) {
+    return dao.buscarPorCodigo(codigo);
+}
+
+public boolean descontarStock(String codigo, int cantidadVendida) {
+    Producto p = dao.buscarPorCodigo(codigo);
+
+    if (p == null) return false;
+
+    int nuevoStock = p.getCantidadEnStock() - cantidadVendida;
+
+    if (nuevoStock < 0) return false;
+
+    return dao.actualizarStock(codigo, nuevoStock);
+}
 }
