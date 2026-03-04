@@ -64,14 +64,15 @@ public class Ventas extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVentas = new javax.swing.JTable();
-        BtnVolverMenú = new javax.swing.JButton();
         BtnModificar = new javax.swing.JButton();
+        BtnVolverMenú = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
         txtIdProducto = new javax.swing.JTextField();
         lblTotal = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        BtnRegistrar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,7 +80,7 @@ public class Ventas extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Icono MiniSuper.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 1370, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 59, 1370, 120));
 
         jLabel2.setBackground(new java.awt.Color(0, 102, 204));
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
@@ -90,13 +91,13 @@ public class Ventas extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 102, 204));
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel3.setText("Id Producto: ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 190, 50));
+        jLabel3.setText("Codigo Producto: ");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 260, 50));
 
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 245, 1090, -1));
 
         tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -113,17 +114,6 @@ public class Ventas extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 920, 250));
 
-        BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
-        BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        BtnVolverMenú.setForeground(new java.awt.Color(255, 255, 255));
-        BtnVolverMenú.setText("Volver a Menú");
-        BtnVolverMenú.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnVolverMenúActionPerformed(evt);
-            }
-        });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
-
         BtnModificar.setBackground(new java.awt.Color(0, 153, 51));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
@@ -133,7 +123,18 @@ public class Ventas extends javax.swing.JFrame {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 630, 210, 50));
+        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 630, 210, 50));
+
+        BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
+        BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        BtnVolverMenú.setForeground(new java.awt.Color(255, 255, 255));
+        BtnVolverMenú.setText("Volver a Menú");
+        BtnVolverMenú.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnVolverMenúActionPerformed(evt);
+            }
+        });
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 10, 230, -1));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -144,8 +145,8 @@ public class Ventas extends javax.swing.JFrame {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 300, 183, -1));
-        jPanel1.add(txtIdProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 260, 35));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 310, 183, -1));
+        jPanel1.add(txtIdProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 290, 260, 35));
 
         lblTotal.setBackground(new java.awt.Color(0, 102, 204));
         lblTotal.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -153,19 +154,30 @@ public class Ventas extends javax.swing.JFrame {
         lblTotal.setText("0.00");
         lblTotal.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 640, 220, 30));
-        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 300, 260, 35));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 290, 260, 35));
 
         jLabel9.setBackground(new java.awt.Color(0, 102, 204));
         jLabel9.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 102, 204));
         jLabel9.setText("Cantidad: ");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 300, -1, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 290, -1, 30));
 
         jLabel10.setBackground(new java.awt.Color(0, 102, 204));
         jLabel10.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 102, 204));
         jLabel10.setText("TOTAL: ");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 640, -1, 30));
+
+        BtnRegistrar1.setBackground(new java.awt.Color(255, 0, 0));
+        BtnRegistrar1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        BtnRegistrar1.setForeground(new java.awt.Color(255, 255, 255));
+        BtnRegistrar1.setText("- Eliminar");
+        BtnRegistrar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegistrar1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(BtnRegistrar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 370, 183, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,9 +187,7 @@ public class Ventas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
         );
 
         pack();
@@ -386,7 +396,7 @@ public class Ventas extends javax.swing.JFrame {
                 Desktop.getDesktop().open(file);
             }
 
-            JOptionPane.showMessageDialog(this, "Factura generada y guardada\n" );
+            JOptionPane.showMessageDialog(this, "Factura generada y guardada\n");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,6 +437,44 @@ public class Ventas extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
+    private void actualizarTotal() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+        BigDecimal totalVenta = BigDecimal.ZERO;
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            if (modelo.getValueAt(i, 3) != null) {
+                BigDecimal totalFila = new BigDecimal(modelo.getValueAt(i, 3).toString());
+                totalVenta = totalVenta.add(totalFila);
+            }
+        }
+
+        lblTotal.setText("" + totalVenta);
+    }
+    private void BtnRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrar1ActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+
+// Verificar si hay una fila seleccionada
+        int filaSeleccionada = tablaVentas.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla para eliminar");
+            return;
+        }
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea eliminar este producto?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            modelo.removeRow(filaSeleccionada);
+            actualizarTotal();
+        }
+    }//GEN-LAST:event_BtnRegistrar1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -434,6 +482,7 @@ public class Ventas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnRegistrar;
+    private javax.swing.JButton BtnRegistrar1;
     private javax.swing.JButton BtnVolverMenú;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

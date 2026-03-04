@@ -5,6 +5,7 @@
 package CapaPresentacion;
 
 import CapaModelo.Usuario;
+import CapaNegocio.ReporteService;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +17,8 @@ public class Reportes extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-      private Usuario usuarioLogueado; 
+    private Usuario usuarioLogueado;
+
     public Reportes(Usuario usuario) {
         initComponents();
         this.usuarioLogueado = usuario;
@@ -35,7 +37,6 @@ public class Reportes extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        btnUsuarios = new javax.swing.JButton();
         BtnProductos = new javax.swing.JButton();
         BtnLogin = new javax.swing.JButton();
         BtnClientes = new javax.swing.JButton();
@@ -46,25 +47,21 @@ public class Reportes extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Icono MiniSuper.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 63, 1370, 140));
 
         jLabel2.setBackground(new java.awt.Color(0, 102, 204));
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 204));
         jLabel2.setText("SELECCIONE EL ÍTEM A GENERAR REPORTE");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 950, 43));
 
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-
-        btnUsuarios.setBackground(new java.awt.Color(204, 204, 204));
-        btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn usuarios.png"))); // NOI18N
-        btnUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuariosActionPerformed(evt);
-            }
-        });
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 1165, -1));
 
         BtnProductos.setBackground(new java.awt.Color(204, 204, 204));
         BtnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn productos.png"))); // NOI18N
@@ -73,9 +70,10 @@ public class Reportes extends javax.swing.JFrame {
                 BtnProductosActionPerformed(evt);
             }
         });
+        jPanel1.add(BtnProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 310, -1, -1));
 
         BtnLogin.setBackground(new java.awt.Color(255, 0, 0));
-        BtnLogin.setFont(new java.awt.Font("Arial Black", 1, 26)); // NOI18N
+        BtnLogin.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
         BtnLogin.setForeground(new java.awt.Color(255, 255, 255));
         BtnLogin.setText("Volver al Menú");
         BtnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +81,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnLoginActionPerformed(evt);
             }
         });
+        jPanel1.add(BtnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1072, 10, 270, -1));
 
         BtnClientes.setBackground(new java.awt.Color(204, 204, 204));
         BtnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn Clientes.png"))); // NOI18N
@@ -91,6 +90,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnClientesActionPerformed(evt);
             }
         });
+        jPanel1.add(BtnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 310, -1, -1));
 
         BtnProveedores.setBackground(new java.awt.Color(204, 204, 204));
         BtnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn Proveedores.png"))); // NOI18N
@@ -99,6 +99,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnProveedoresActionPerformed(evt);
             }
         });
+        jPanel1.add(BtnProveedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, -1, -1));
 
         BtnCompras.setBackground(new java.awt.Color(204, 204, 204));
         BtnCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Btn Compras.png"))); // NOI18N
@@ -107,6 +108,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnComprasActionPerformed(evt);
             }
         });
+        jPanel1.add(BtnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 490, -1, -1));
 
         BtnVentas.setBackground(new java.awt.Color(204, 204, 204));
         BtnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn ventas.png"))); // NOI18N
@@ -115,64 +117,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnVentasActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1370, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 1165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(198, 198, 198))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnUsuarios, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnProveedores, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(140, 140, 140)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnProductos)
-                            .addComponent(BtnCompras))
-                        .addGap(130, 130, 130)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnVentas)
-                            .addComponent(BtnClientes))
-                        .addGap(297, 297, 297))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(BtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnProductos)
-                    .addComponent(btnUsuarios)
-                    .addComponent(BtnClientes))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnCompras)
-                    .addComponent(BtnVentas)
-                    .addComponent(BtnProveedores))
-                .addGap(18, 18, 18)
-                .addComponent(BtnLogin)
-                .addContainerGap(34, Short.MAX_VALUE))
-        );
+        jPanel1.add(BtnVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 490, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,60 +145,86 @@ public class Reportes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnLoginActionPerformed
 
-    private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
-
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE USUARIOS?");
-        if (cri == 0) {
-
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
-        }
-    }//GEN-LAST:event_btnUsuariosActionPerformed
-
     private void BtnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnProductosActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE PRODUCTOS?");
-        if (cri == 0) {
+        try {
 
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE PRODUCTOS?");
+            if (cri == 0) {
+                ReporteService reporteservice = new ReporteService();
+                reporteservice.generarReporteProductos();
+                JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar reporte");
         }
 
     }//GEN-LAST:event_BtnProductosActionPerformed
 
     private void BtnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnClientesActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE CLIENTES?");
-        if (cri == 0) {
+        try {
 
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE CLIENTES?");
+            if (cri == 0) {
+
+                ReporteService reporteService = new ReporteService();
+                reporteService.generarReporteClientes();
+                JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar el reporte");
         }
 
     }//GEN-LAST:event_BtnClientesActionPerformed
 
     private void BtnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnProveedoresActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE PROVEEDORES?");
-        if (cri == 0) {
+        try {
 
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE PROVEEDORES?");
+            if (cri == 0) {
+
+                ReporteService reporteservice = new ReporteService();
+                reporteservice.generarReporteProveedores();
+
+                JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            }
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(this, "Error al generar reporte");
         }
 
     }//GEN-LAST:event_BtnProveedoresActionPerformed
 
     private void BtnComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnComprasActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE COMPRAS?");
-        if (cri == 0) {
+        try {
 
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE COMPRAS?");
+            if (cri == 0) {
+
+                ReporteService reporteService = new ReporteService();
+                reporteService.generarReporteCompras();
+                JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar reporte");
         }
-
     }//GEN-LAST:event_BtnComprasActionPerformed
 
     private void BtnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVentasActionPerformed
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE VENTAS?");
-        if (cri == 0) {
+        try {
 
-            JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            int cri = JOptionPane.showConfirmDialog(null, "¿DESEA GENERAR UN REPORTE DE VENTAS?");
+            if (cri == 0) {
+                ReporteService reporte = new ReporteService();
+                reporte.generarReporteVentas();
+                JOptionPane.showMessageDialog(this, "Reporte generado correctamente");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar el reporte");
         }
 
     }//GEN-LAST:event_BtnVentasActionPerformed
@@ -261,7 +232,6 @@ public class Reportes extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnClientes;
@@ -270,7 +240,6 @@ public class Reportes extends javax.swing.JFrame {
     private javax.swing.JButton BtnProductos;
     private javax.swing.JButton BtnProveedores;
     private javax.swing.JButton BtnVentas;
-    private javax.swing.JButton btnUsuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;

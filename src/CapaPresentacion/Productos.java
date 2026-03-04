@@ -73,7 +73,7 @@ public class Productos extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Icono MiniSuper.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 1370, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 54, 1370, 130));
 
         jLabel2.setBackground(new java.awt.Color(0, 102, 204));
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
@@ -85,33 +85,33 @@ public class Productos extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 204));
         jLabel3.setText("Código:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 290, -1, 43));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, 43));
 
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
-        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 300, 260, 35));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 245, 1080, -1));
+        jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 290, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 204));
         jLabel4.setText("Nombre:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, -1, 40));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, -1, 50));
 
         jLabel6.setBackground(new java.awt.Color(0, 102, 204));
         jLabel6.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Precio:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 290, -1, 43));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 280, -1, 43));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(txtCantidadEnStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
+        jPanel1.add(txtCantidadEnStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 340, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 102, 204));
         jLabel7.setText("Cant. Stock:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 390, -1, 43));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 330, -1, 50));
 
         TablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,7 +131,7 @@ public class Productos extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TablaProductos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, 1270, 220));
 
         BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
         BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -142,7 +142,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 10, 183, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -153,7 +153,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(921, 389, 183, -1));
+        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 640, 183, -1));
 
         BtnEliminar.setBackground(new java.awt.Color(255, 0, 0));
         BtnEliminar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -164,7 +164,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 390, 183, -1));
+        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 640, 183, -1));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -175,20 +175,20 @@ public class Productos extends javax.swing.JFrame {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 389, 183, -1));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 640, 183, -1));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo precio icono.png"))); // NOI18N
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 290, 40, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 280, 40, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo productos icono.png"))); // NOI18N
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 40, 40));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo cantidad stock icono.png"))); // NOI18N
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 390, -1, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 340, 40, 40));
         jPanel1.add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo código icono.png"))); // NOI18N
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, -1, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 280, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,7 +198,9 @@ public class Productos extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();

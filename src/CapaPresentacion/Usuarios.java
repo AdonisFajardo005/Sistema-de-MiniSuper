@@ -65,7 +65,7 @@ public class Usuarios extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Icono MiniSuper.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 1370, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 54, 1370, 130));
 
         jLabel2.setBackground(new java.awt.Color(0, 102, 204));
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
@@ -82,7 +82,7 @@ public class Usuarios extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(159, 245, 1050, -1));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
@@ -97,16 +97,16 @@ public class Usuarios extends javax.swing.JFrame {
         jLabel6.setText("Rol:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 290, -1, 43));
         jPanel1.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 340, 260, 35));
-        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, 260, 35));
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 102, 204));
         jLabel7.setText("Contraseña:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 390, -1, 43));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 333, -1, 50));
 
         cboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Empleado" }));
-        jPanel1.add(cboRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 290, 180, 40));
+        jPanel1.add(cboRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 290, 260, 40));
 
         TablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -126,7 +126,7 @@ public class Usuarios extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TablaUsuarios);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, 1270, 200));
 
         BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
         BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -137,7 +137,7 @@ public class Usuarios extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1103, 10, 240, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -148,7 +148,7 @@ public class Usuarios extends javax.swing.JFrame {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(921, 389, 183, -1));
+        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 640, 183, -1));
 
         BtnEliminar.setBackground(new java.awt.Color(255, 0, 0));
         BtnEliminar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -159,7 +159,7 @@ public class Usuarios extends javax.swing.JFrame {
                 BtnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 390, 183, -1));
+        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 640, 183, -1));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -170,7 +170,7 @@ public class Usuarios extends javax.swing.JFrame {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(695, 389, 183, -1));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 640, 183, -1));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono usuario.png"))); // NOI18N
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 290, -1, -1));
@@ -179,7 +179,7 @@ public class Usuarios extends javax.swing.JFrame {
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 341, -1, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono candado.png"))); // NOI18N
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(79, 387, -1, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 340, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

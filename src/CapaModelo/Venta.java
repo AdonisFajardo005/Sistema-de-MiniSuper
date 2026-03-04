@@ -9,6 +9,7 @@ package CapaModelo;
  * @author adoni
  */
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Venta {
@@ -81,5 +82,7 @@ public class Venta {
     public void setPrecioVenta(BigDecimal precioVenta) {
         this.precioVenta = precioVenta;
     }
+
+   
     
 }

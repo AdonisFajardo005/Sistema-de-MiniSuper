@@ -34,7 +34,7 @@ public class Compras extends javax.swing.JFrame {
         cargarTabla();
         limpiarCampos();
         txtId.setEditable(false);
-        txtFecha.setEditable(false);
+
     }
 
     /**
@@ -52,9 +52,7 @@ public class Compras extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtPrecioCompra = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JTextField();
         txtProducto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -75,7 +73,7 @@ public class Compras extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Icono MiniSuper.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 1370, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 54, 1370, 130));
 
         jLabel2.setBackground(new java.awt.Color(0, 102, 204));
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
@@ -92,30 +90,21 @@ public class Compras extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 245, 1080, -1));
         jPanel1.add(txtPrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 280, 260, 35));
-
-        jLabel4.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel4.setText("Fecha:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, -1, 40));
 
         jLabel6.setBackground(new java.awt.Color(0, 102, 204));
         jLabel6.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Proveedor:");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 340, 150, 30));
-
-        txtFecha.setText("No es necesario insertar una Fecha");
-        jPanel1.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 260, 35));
-        jPanel1.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, 260, 35));
+        jPanel1.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 102, 204));
         jLabel7.setText("Nombre producto:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, 260, 43));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 260, 43));
 
         tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,7 +124,7 @@ public class Compras extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaProveedores);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 1270, 200));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 1270, 200));
 
         BtnVolverMenú.setBackground(new java.awt.Color(255, 0, 0));
         BtnVolverMenú.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -146,7 +135,7 @@ public class Compras extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 196, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 10, 183, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -157,7 +146,7 @@ public class Compras extends javax.swing.JFrame {
                 BtnModificarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 410, 183, -1));
+        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 640, 190, -1));
 
         BtnEliminar.setBackground(new java.awt.Color(255, 0, 0));
         BtnEliminar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -168,7 +157,7 @@ public class Compras extends javax.swing.JFrame {
                 BtnEliminarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1160, 410, 183, -1));
+        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 640, 183, -1));
 
         BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -179,8 +168,9 @@ public class Compras extends javax.swing.JFrame {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 410, 183, -1));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 640, 183, -1));
 
+        txtId.setBackground(new java.awt.Color(204, 204, 204));
         txtId.setText("No es necesario insertar un ID");
         jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 260, 35));
 
@@ -188,8 +178,8 @@ public class Compras extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 102, 204));
         jLabel8.setText("Cantidad: ");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, -1, 30));
-        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 420, 260, 35));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, 30));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, 260, 35));
 
         cbProveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 340, 260, 40));
@@ -208,7 +198,7 @@ public class Compras extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
         );
 
         pack();
@@ -338,9 +328,8 @@ public class Compras extends javax.swing.JFrame {
         int fila = tablaProveedores.getSelectedRow();
 
         if (fila >= 0) {
-
             txtId.setText(tablaProveedores.getValueAt(fila, 0).toString());
-            txtFecha.setText(tablaProveedores.getValueAt(fila, 1).toString());
+
             txtProducto.setText(tablaProveedores.getValueAt(fila, 2).toString());
 
             txtCantidad.setText(tablaProveedores.getValueAt(fila, 3).toString());
@@ -350,19 +339,18 @@ public class Compras extends javax.swing.JFrame {
             cbProveedor.setSelectedItem(tablaProveedores.getValueAt(fila, 5).toString());
 
             txtId.setEditable(false);
-            txtFecha.setEditable(false);
+
         }
     }//GEN-LAST:event_tablaProveedoresMouseClicked
 
     private void limpiarCampos() {
         txtId.setText("No es necesario insertar un ID");
         txtProducto.setText("");
-        txtFecha.setText("No es necesario insertar una fecha");
+
         txtPrecioCompra.setText("");
         txtCantidad.setText("");
         cbProveedor.setSelectedIndex(0);
         txtId.setForeground(Color.GRAY);
-        txtFecha.setForeground(Color.GRAY);
 
     }
 
@@ -411,7 +399,6 @@ public class Compras extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -421,7 +408,6 @@ public class Compras extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaProveedores;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtPrecioCompra;
     private javax.swing.JTextField txtProducto;
