@@ -145,7 +145,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 10, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 10, 183, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
