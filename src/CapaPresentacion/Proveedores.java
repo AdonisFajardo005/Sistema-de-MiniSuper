@@ -201,14 +201,35 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
-        if (cri == 0) {
-            Principal p;
-            p = new Principal(usuarioLogueado);
-            p.setVisible(true);
-            dispose();
+        boolean hayDatos = !txtNombre.getText().trim().isEmpty() ||
+                   !txtCedula.getText().trim().isEmpty() ||
+                   !txtCelular.getText().trim().isEmpty() ||
+                !txtEmpresa.getText().trim().isEmpty();
 
-        }
+int cri;
+
+if (hayDatos) {
+    cri = JOptionPane.showConfirmDialog(
+            null,
+            "¿Realmente desea volver?\nHay datos sin terminar.",
+            "Advertencia",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+    );
+} else {
+    cri = JOptionPane.showConfirmDialog(
+            null,
+            "¿Desea volver al menú?",
+            "Confirmar",
+            JOptionPane.YES_NO_OPTION
+    );
+}
+
+if (cri == JOptionPane.YES_OPTION) {
+    Principal p = new Principal(usuarioLogueado);
+    p.setVisible(true);
+    dispose();
+}
 
 
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
@@ -243,7 +264,8 @@ public class Proveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        // 🔥 Verificar que haya una fila seleccionada
+
+// 🔥 Verificar que haya una fila seleccionada
         if (tablaProveedores.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un Proveedor de la tabla");
             return;
@@ -279,25 +301,30 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        try {
-            ProveedorService service = new ProveedorService();
+        if (txtCedula.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtEmpresa.getText().trim().isEmpty() || txtCelular.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+            return;
+        } else {
+            try {
+                ProveedorService service = new ProveedorService();
 
-            Proveedor c = new Proveedor();
-            c.setCedula(txtCedula.getText());
-            c.setNombre(txtNombre.getText());
-            c.setCelular(txtCelular.getText());
-            c.setEmpresa(txtEmpresa.getText());
+                Proveedor c = new Proveedor();
+                c.setCedula(txtCedula.getText());
+                c.setNombre(txtNombre.getText());
+                c.setCelular(txtCelular.getText());
+                c.setEmpresa(txtEmpresa.getText());
 
-            service.guardarProveedor(c);
-            JOptionPane.showMessageDialog(this, "Proveedor Registrado Correctamente");
-            limpiarCampos();
-            cargarTabla();
-            txtCedula.setEditable(true);
+                service.guardarProveedor(c);
+                JOptionPane.showMessageDialog(this, "Proveedor Registrado Correctamente");
+                limpiarCampos();
+                cargarTabla();
+                txtCedula.setEditable(true);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al registrar");
+            }
+
         }
-
     }
 
     private void cargarTabla() {
@@ -320,7 +347,7 @@ public class Proveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
-         int fila = tablaProveedores.getSelectedRow();
+        int fila = tablaProveedores.getSelectedRow();
 
         if (fila >= 0) {
 

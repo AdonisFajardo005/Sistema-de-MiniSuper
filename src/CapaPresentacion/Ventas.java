@@ -212,13 +212,31 @@ public class Ventas extends javax.swing.JFrame {
     }
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
-        if (cri == 0) {
-            Principal p;
-            p = new Principal(usuarioLogueado);
+        int filas = tablaVentas.getRowCount(); 
+
+        int cri;
+
+        if (filas > 0) {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Seguro que desea volver al menú?\nSe eliminarán todos los productos agregados.",
+                    "ADVERTENCIA",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Desea volver al menú?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+        }
+
+        if (cri == JOptionPane.YES_OPTION) {
+            Principal p = new Principal(usuarioLogueado);
             p.setVisible(true);
             dispose();
-
         }
 
 
@@ -404,8 +422,22 @@ public class Ventas extends javax.swing.JFrame {
         }
     }
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
+
+        if (txtIdProducto.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un código de producto y una cantidad");
+            return;
+        }
+
         String codigo = txtIdProducto.getText();
-        int cantidad = Integer.parseInt(txtCantidad.getText());
+        int cantidad;
+
+        try {
+            cantidad = Integer.parseInt(txtCantidad.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La cantidad debe ser un número, no letras");
+            txtCantidad.setText("");
+            return;
+        }
 
         ProductoService service = new ProductoService();
         Producto p = service.buscarProducto(codigo);
@@ -415,26 +447,63 @@ public class Ventas extends javax.swing.JFrame {
             return;
         }
 
-        if (cantidad > p.getCantidadEnStock()) {
-            JOptionPane.showMessageDialog(this, "Stock insuficiente");
-            return;
-        }
-
-        BigDecimal precioTotal = p.getPrecio().multiply(new BigDecimal(cantidad));
-
         DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
 
-        modelo.addRow(new Object[]{
-            p.getCodigo(),
-            p.getNombre(),
-            cantidad,
-            precioTotal
-        });
+        boolean encontrado = false;
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            String codigoTabla = modelo.getValueAt(i, 0).toString();
+
+            if (codigoTabla.equals(p.getCodigo())) {
+
+                int cantidadActual = Integer.parseInt(modelo.getValueAt(i, 2).toString());
+                int nuevaCantidad = cantidadActual + cantidad;
+
+                if (nuevaCantidad > p.getCantidadEnStock()) {
+                    JOptionPane.showMessageDialog(this, "Stock insuficiente");
+                    return;
+                }
+
+                if (nuevaCantidad == p.getCantidadEnStock()) {
+                    JOptionPane.showMessageDialog(this, "Se ha agotado el stock de este producto");
+                }
+
+                BigDecimal nuevoTotal = p.getPrecio().multiply(new BigDecimal(nuevaCantidad));
+
+                modelo.setValueAt(nuevaCantidad, i, 2);
+                modelo.setValueAt(nuevoTotal, i, 3);
+
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+
+            if (cantidad > p.getCantidadEnStock()) {
+                JOptionPane.showMessageDialog(this, "Stock insuficiente");
+                return;
+            }
+
+            if (cantidad == p.getCantidadEnStock()) {
+                JOptionPane.showMessageDialog(this, "Se ha agotado el stock de este producto");
+            }
+
+            BigDecimal precioTotal = p.getPrecio().multiply(new BigDecimal(cantidad));
+
+            modelo.addRow(new Object[]{
+                p.getCodigo(),
+                p.getNombre(),
+                cantidad,
+                precioTotal
+            });
+        }
 
         calcularTotal();
+
         txtIdProducto.setText("");
         txtCantidad.setText("");
-
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     private void actualizarTotal() {

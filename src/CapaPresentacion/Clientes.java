@@ -208,14 +208,35 @@ public class Clientes extends javax.swing.JFrame {
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
-        if (cri == 0) {
-            Principal p;
-            p = new Principal(usuarioLogueado);
+        boolean hayDatos = !txtCedula.getText().trim().isEmpty()
+                || !txtNombre.getText().trim().isEmpty()
+                || !txtCelular.getText().trim().isEmpty()
+                || !txtDireccion.getText().trim().isEmpty();
+
+        int cri;
+
+        if (hayDatos) {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Realmente desea volver?\nAún no termina de ingresa el cliente.",
+                    "Advertencia",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Desea volver al menú?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+        }
+
+        if (cri == JOptionPane.YES_OPTION) {
+            Principal p = new Principal(usuarioLogueado);
             p.setExtendedState(JFrame.MAXIMIZED_BOTH);
             p.setVisible(true);
             dispose();
-
         }
 
 
@@ -314,25 +335,30 @@ public class Clientes extends javax.swing.JFrame {
     }
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        try {
-            ClienteService service = new ClienteService();
+        if (txtCedula.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtDireccion.getText().trim().isEmpty() || txtCelular.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos los campos");
+            return;
+        } else {
+            try {
+                ClienteService service = new ClienteService();
 
-            Cliente c = new Cliente();
-            c.setCedula(txtCedula.getText());
-            c.setNombre(txtNombre.getText());
-            c.setCelular(txtCelular.getText());
-            c.setDireccion(txtDireccion.getText());
+                Cliente c = new Cliente();
+                c.setCedula(txtCedula.getText());
+                c.setNombre(txtNombre.getText());
+                c.setCelular(txtCelular.getText());
+                c.setDireccion(txtDireccion.getText());
 
-            service.guardarCliente(c);
-            JOptionPane.showMessageDialog(this, "Registrado Correctamente");
-            limpiarCampos();
-            cargarTabla();
-            txtCedula.setEditable(true);
+                service.guardarCliente(c);
+                JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+                limpiarCampos();
+                cargarTabla();
+                txtCedula.setEditable(true);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al registrar");
+            }
+
         }
-
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
@@ -352,7 +378,6 @@ public class Clientes extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnEliminar;

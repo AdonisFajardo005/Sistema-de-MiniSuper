@@ -4,12 +4,20 @@
  */
 package CapaPresentacion;
 
+import CapaDatos.Conexion;
 import CapaModelo.Usuario;
 import CapaNegocio.UsuarioService;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import CapaModelo.Usuario;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -197,7 +205,28 @@ public class Usuarios extends javax.swing.JFrame {
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(this, "¿DESEA VOLVER AL MENÚ?");
+        boolean hayDatos = !txtNombre.getText().trim().isEmpty()
+                || !txtUsuario.getText().trim().isEmpty()
+                || !txtPassword.getText().trim().isEmpty();
+
+        int cri;
+
+        if (hayDatos) {
+            cri = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Realmente desea volver?\nAún no termina de registrar el usuario.",
+                    "Advertencia",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            cri = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Desea volver al menú?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+        }
 
         if (cri == JOptionPane.YES_OPTION) {
 
@@ -277,7 +306,6 @@ public class Usuarios extends javax.swing.JFrame {
 
         String usuario = txtUsuario.getText();
 
-        // 🔥 Confirmación
         int opcion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro de eliminar este usuario?",
@@ -306,8 +334,29 @@ public class Usuarios extends javax.swing.JFrame {
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
+        if (txtNombre.getText().trim().isEmpty()
+                || txtUsuario.getText().trim().isEmpty()
+                || txtPassword.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Debe ingresar datos para poder guardar",
+                    "Campos vacíos",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
+
             UsuarioService service = new UsuarioService();
+
+            // validar usuario repetido
+            if (existeUsuario(txtUsuario.getText().trim())) {
+                JOptionPane.showMessageDialog(this,
+                        "Ya existe un usuario con ese nombre de usuario",
+                        "Usuario duplicado",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
             Usuario c = new Usuario();
             c.setNombre(txtNombre.getText());
@@ -316,7 +365,9 @@ public class Usuarios extends javax.swing.JFrame {
             c.setRol(cboRol.getSelectedItem().toString());
 
             service.guardar(c);
+
             JOptionPane.showMessageDialog(this, "Registrado Correctamente");
+
             limpiarCampos();
             cargarTabla();
 
@@ -324,9 +375,24 @@ public class Usuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al registrar");
         }
 
-
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
+    public boolean existeUsuario(String usuario) throws Exception {
+
+        Connection conexion = Conexion.getConnection();
+
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE usuario = ?";
+        PreparedStatement ps = conexion.prepareStatement(sql);
+        ps.setString(1, usuario);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+
+        return false;
+    }
     private void TablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaUsuariosMouseClicked
         int fila = TablaUsuarios.getSelectedRow();
 

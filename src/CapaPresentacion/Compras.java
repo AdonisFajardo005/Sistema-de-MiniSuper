@@ -206,13 +206,33 @@ public class Compras extends javax.swing.JFrame {
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
-        if (cri == 0) {
-            Principal p;
-            p = new Principal(usuarioLogueado);
+        boolean hayDatos = !txtProducto.getText().trim().isEmpty()
+                || !txtCantidad.getText().trim().isEmpty()
+                || !txtPrecioCompra.getText().trim().isEmpty();
+
+        int cri;
+
+        if (hayDatos) {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Realmente desea volver?\nAún no termina de agregar la compra.",
+                    "Advertencia",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Desea volver al menú?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+        }
+
+        if (cri == JOptionPane.YES_OPTION) {
+            Principal p = new Principal(usuarioLogueado);
             p.setVisible(true);
             dispose();
-
         }
 
 

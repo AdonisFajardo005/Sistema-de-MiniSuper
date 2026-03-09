@@ -4,11 +4,14 @@
  */
 package CapaPresentacion;
 
+import CapaDatos.Conexion;
 import CapaModelo.Producto;
 import CapaModelo.Usuario;
 import CapaNegocio.ProductoService;
 import java.util.List;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.TabableView;
@@ -142,7 +145,7 @@ public class Productos extends javax.swing.JFrame {
                 BtnVolverMenúActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 10, 183, -1));
+        jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 10, 183, -1));
 
         BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -208,13 +211,34 @@ public class Productos extends javax.swing.JFrame {
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int cri = JOptionPane.showConfirmDialog(null, "¿DESEA VOLVER AL MENÚ?");
-        if (cri == 0) {
-            Principal p;
-            p = new Principal(usuarioLogueado);
+        boolean hayDatos = !txtNombre.getText().trim().isEmpty()
+                || !txtCodigo.getText().trim().isEmpty()
+                || !txtCantidadEnStock.getText().trim().isEmpty()
+                || !txtPrecio.getText().trim().isEmpty();
+
+        int cri;
+
+        if (hayDatos) {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Realmente desea volver?\nAún no termina de registrar el producto.",
+                    "Advertencia",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            cri = JOptionPane.showConfirmDialog(
+                    null,
+                    "¿Desea volver al menú?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+        }
+
+        if (cri == JOptionPane.YES_OPTION) {
+            Principal p = new Principal(usuarioLogueado);
             p.setVisible(true);
             dispose();
-
         }
 
 
@@ -252,7 +276,7 @@ public class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnModificarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-       // 🔥 Verificar que haya una fila seleccionada
+        // 🔥 Verificar que haya una fila seleccionada
         if (TablaProductos.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un Producto de la tabla");
             return;
@@ -290,26 +314,78 @@ public class Productos extends javax.swing.JFrame {
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
         try {
+
             ProductoService service = new ProductoService();
+
+            // validar código vacío
+            if (txtCodigo.getText().trim().isEmpty()
+                    || txtNombre.getText().trim().isEmpty()
+                    || txtCantidadEnStock.getText().trim().isEmpty()
+                    || txtPrecio.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Debe ingresar todos los datos",
+                        "Campos vacíos",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // validar código duplicado
+            if (existeCodigo(txtCodigo.getText().trim())) {
+                JOptionPane.showMessageDialog(this,
+                        "Ya existe un producto con ese código",
+                        "Código duplicado",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             Producto p = new Producto();
-            p.setCodigo(txtCodigo.getText());
-            p.setNombre(txtNombre.getText());
-            p.setCantidadEnStock(Integer.parseInt(txtCantidadEnStock.getText()));
-            p.setPrecio(new java.math.BigDecimal(txtPrecio.getText()));
+            p.setCodigo(txtCodigo.getText().trim());
+            p.setNombre(txtNombre.getText().trim());
+            p.setCantidadEnStock(Integer.parseInt(txtCantidadEnStock.getText().trim()));
+            p.setPrecio(new java.math.BigDecimal(txtPrecio.getText().trim()));
+
             service.guardarProductos(p);
-            JOptionPane.showMessageDialog(this, "Producto Registrado Correctamente");
+
+            JOptionPane.showMessageDialog(this, "Producto registrado correctamente");
+
             limpiarCampos();
             cargarTabla();
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error: Verifica que la cantidad y el precio sean números válidos");
+
+            JOptionPane.showMessageDialog(this,
+                    "Error: cantidad o precio no son números válidos",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar el producto");
+
+            JOptionPane.showMessageDialog(this,
+                    "Error real: " + e.getMessage());
+        }
+    }
+
+    public boolean existeCodigo(String codigo) throws Exception {
+
+        String sql = "SELECT COUNT(*) FROM Productos WHERE codigo = ?";
+
+        try (Connection conexion = Conexion.getConnection(); PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setString(1, codigo);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
         }
 
+        return false;
     }
 
     private void limpiarCampos() {
-        
+
         txtCodigo.setText("");
         txtNombre.setText("");
         txtCantidadEnStock.setText("");
