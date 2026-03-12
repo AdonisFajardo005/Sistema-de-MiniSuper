@@ -74,7 +74,7 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 204));
         jLabel2.setText("Gestión Proveedores");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 450, 43));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 200, 450, 43));
 
         jLabel3.setBackground(new java.awt.Color(0, 102, 204));
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -85,7 +85,7 @@ public class Proveedores extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 245, 549, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 549, -1));
         jPanel1.add(txtEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 290, 260, 35));
 
         jLabel4.setBackground(new java.awt.Color(0, 102, 204));
