@@ -108,7 +108,7 @@ public class Reportes extends javax.swing.JFrame {
                 BtnComprasActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 490, -1, -1));
+        jPanel1.add(BtnCompras, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 490, -1, -1));
 
         BtnVentas.setBackground(new java.awt.Color(204, 204, 204));
         BtnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/btn ventas.png"))); // NOI18N

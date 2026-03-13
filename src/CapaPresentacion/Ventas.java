@@ -24,7 +24,12 @@ import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 //PRUEBA PARA VER SI CARGA BIEN 
 // nueva prueba 
@@ -46,6 +51,8 @@ public class Ventas extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
         modelo.setRowCount(0);
 
+        eventoEscritura();
+        eventoLista();
     }
 
     /**
@@ -67,7 +74,7 @@ public class Ventas extends javax.swing.JFrame {
         BtnModificar = new javax.swing.JButton();
         BtnVolverMenú = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
-        txtIdProducto = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         lblTotal = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -75,6 +82,9 @@ public class Ventas extends javax.swing.JFrame {
         BtnRegistrar1 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        txtProducto = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,8 +103,8 @@ public class Ventas extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 102, 204));
         jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel3.setText("Codigo Producto: ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 260, 50));
+        jLabel3.setText("Nombre Producto: ");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 260, 30));
 
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
@@ -114,7 +124,7 @@ public class Ventas extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaVentas);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, 920, 250));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 400, 920, 220));
 
         BtnModificar.setBackground(new java.awt.Color(0, 153, 51));
         BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -148,7 +158,7 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
         jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 310, 183, -1));
-        jPanel1.add(txtIdProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 290, 260, 35));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 290, 260, 35));
 
         lblTotal.setBackground(new java.awt.Color(0, 102, 204));
         lblTotal.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -185,7 +195,17 @@ public class Ventas extends javax.swing.JFrame {
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 290, -1, 30));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo código icono.png"))); // NOI18N
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, 30));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 40, 30));
+
+        jLabel4.setBackground(new java.awt.Color(0, 102, 204));
+        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 102, 204));
+        jLabel4.setText("Codigo Producto: ");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 250, 30));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo productos icono.png"))); // NOI18N
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 50, 50));
+        jPanel1.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 350, 260, 35));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,6 +220,10 @@ public class Ventas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    JPopupMenu popup = new JPopupMenu();
+    JList listaUI = new JList();
+    ProductoService servicio = new ProductoService();
 
     private void calcularTotal() {
 
@@ -218,9 +242,104 @@ public class Ventas extends javax.swing.JFrame {
 
         lblTotal.setText(totalGeneral.toString());
     }
+
+    private void buscar() {
+
+        String texto = txtNombre.getText();
+
+        if (texto.isEmpty()) {
+            popup.setVisible(false);
+            return;
+        }
+
+        List<Producto> lista = servicio.buscar(texto);
+
+        mostrar(lista);
+    }
+
+    private void mostrar(List<Producto> productos) {
+
+        DefaultListModel modelo = new DefaultListModel();
+
+        for (Producto p : productos) {
+
+            modelo.addElement(p.getNombre());
+
+        }
+
+        listaUI.setModel(modelo);
+
+        popup.removeAll();
+
+        popup.add(new JScrollPane(listaUI));
+
+        popup.show(txtNombre, 0, txtNombre.getHeight());
+
+    }
+
+    private void cargarProducto(String nombre) {
+
+        Producto p = servicio.buscarProductoPorNombre(nombre);
+
+        if (p != null) {
+
+            txtProducto.setText(p.getCodigo());
+            txtNombre.setText(p.getNombre());
+
+        }
+
+    }
+
+    private void eventoLista() {
+
+        listaUI.addMouseListener(
+                new java.awt.event.MouseAdapter() {
+
+            public void mouseClicked(
+                    java.awt.event.MouseEvent evt) {
+
+                String nombre
+                        = listaUI.getSelectedValue().toString();
+
+                txtProducto.setText(nombre);
+
+                cargarProducto(nombre);
+
+                popup.setVisible(false);
+
+            }
+
+        });
+
+    }
+
+    private void eventoEscritura() {
+
+        txtNombre.getDocument().addDocumentListener(
+                new javax.swing.event.DocumentListener() {
+
+            public void insertUpdate(
+                    javax.swing.event.DocumentEvent e) {
+                buscar();
+            }
+
+            public void removeUpdate(
+                    javax.swing.event.DocumentEvent e) {
+                buscar();
+            }
+
+            public void changedUpdate(
+                    javax.swing.event.DocumentEvent e) {
+                buscar();
+            }
+
+        });
+
+    }
+
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
-        int filas = tablaVentas.getRowCount(); 
+        int filas = tablaVentas.getRowCount();
 
         int cri;
 
@@ -431,12 +550,12 @@ public class Ventas extends javax.swing.JFrame {
     }
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        if (txtIdProducto.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un código de producto y una cantidad");
+        if (txtNombre.getText().trim().isEmpty() || txtCantidad.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un producto y una cantidad");
             return;
         }
 
-        String codigo = txtIdProducto.getText();
+        String producto = txtNombre.getText(); // ahora es nombre
         int cantidad;
 
         try {
@@ -448,7 +567,9 @@ public class Ventas extends javax.swing.JFrame {
         }
 
         ProductoService service = new ProductoService();
-        Producto p = service.buscarProducto(codigo);
+
+// 🔹 ahora busca por nombre
+        Producto p = service.buscarProductoPorNombre(producto);
 
         if (p == null) {
             JOptionPane.showMessageDialog(this, "Producto no existe");
@@ -477,7 +598,8 @@ public class Ventas extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Se ha agotado el stock de este producto");
                 }
 
-                BigDecimal nuevoTotal = p.getPrecio().multiply(new BigDecimal(nuevaCantidad));
+                BigDecimal nuevoTotal
+                        = p.getPrecio().multiply(new BigDecimal(nuevaCantidad));
 
                 modelo.setValueAt(nuevaCantidad, i, 2);
                 modelo.setValueAt(nuevoTotal, i, 3);
@@ -498,7 +620,8 @@ public class Ventas extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Se ha agotado el stock de este producto");
             }
 
-            BigDecimal precioTotal = p.getPrecio().multiply(new BigDecimal(cantidad));
+            BigDecimal precioTotal
+                    = p.getPrecio().multiply(new BigDecimal(cantidad));
 
             modelo.addRow(new Object[]{
                 p.getCodigo(),
@@ -510,8 +633,9 @@ public class Ventas extends javax.swing.JFrame {
 
         calcularTotal();
 
-        txtIdProducto.setText("");
+        txtNombre.setText("");
         txtCantidad.setText("");
+        txtProducto.setText("");
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     private void actualizarTotal() {
@@ -565,8 +689,10 @@ public class Ventas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -574,6 +700,7 @@ public class Ventas extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JTable tablaVentas;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtIdProducto;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables
 }

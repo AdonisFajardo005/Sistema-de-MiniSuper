@@ -46,4 +46,13 @@ public boolean descontarStock(String codigo, int cantidadVendida) {
 
     return dao.actualizarStock(codigo, nuevoStock);
 }
+
+public List<Producto> buscar(String texto) {
+        return dao.buscarPorNombre(texto);
+    }
+
+    public Producto buscarProductoPorNombre(String nombre) {
+        return dao.buscarExacto(nombre);
+    }
+
 }

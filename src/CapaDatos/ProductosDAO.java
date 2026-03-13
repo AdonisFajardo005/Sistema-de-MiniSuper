@@ -130,5 +130,75 @@ public class ProductosDAO {
     }
 }
     
+      public List<Producto> buscarPorNombre(String texto) {
 
+        List<Producto> lista = new ArrayList<>();
+
+        String sql =
+        "SELECT TOP 3 Codigo,Nombre FROM Productos WHERE Nombre LIKE ?";
+
+        try {
+
+            Connection con = Conexion.getConnection();
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, texto + "%");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Producto p = new Producto();
+
+                p.setCodigo(rs.getString("Codigo"));
+                p.setNombre(rs.getString("Nombre"));
+
+                lista.add(p);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+
+    public Producto buscarExacto(String nombre) {
+
+        Producto p = null;
+
+    String sql =
+    "SELECT Codigo, Nombre, Precio, CantidadEnStock FROM Productos WHERE Nombre = ?";
+
+    try {
+
+        Connection con = Conexion.getConnection();
+
+        PreparedStatement ps = con.prepareStatement(sql);
+
+        ps.setString(1, nombre);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            p = new Producto();
+
+            p.setCodigo(rs.getString("Codigo"));
+            p.setNombre(rs.getString("Nombre"));
+            p.setPrecio(rs.getBigDecimal("Precio"));
+            p.setCantidadEnStock(rs.getInt("CantidadEnStock"));
+
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return p;
+    
+    }
 }
