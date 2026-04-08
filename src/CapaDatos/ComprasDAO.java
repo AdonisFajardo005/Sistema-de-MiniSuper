@@ -15,14 +15,13 @@ import java.util.Date;
  * @author adoni
  */
 public class ComprasDAO {
-
+    
     public boolean insertar(Compra c) {
         
         String sql = "INSERT INTO Compras (Fecha, NombreProducto, Cantidad, PrecioCompra, Proveedor) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             
-            ps.setDate(1, new java.sql.Date(c.getFecha().getTime()));
             ps.setString(2, c.getNombreProducto());
             ps.setInt(3, c.getCantidad());
             ps.setDouble(4, c.getPrecioCompra());
@@ -36,7 +35,27 @@ public class ComprasDAO {
             return false;
         }
     }
-
+    
+    public boolean insertarCompras(Compra c) {
+        
+        String sql = "INSERT INTO compras (Fecha, NombreProducto, Cantidad, PrecioCompra, Proveedor) VALUES (GETDATE(), ?, ?, ?, ?)";
+        
+        try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, c.getNombreProducto());
+            ps.setInt(2, c.getCantidad());
+            ps.setDouble(3, c.getPrecioCompra());
+            ps.setString(4, c.getProveedor());
+            
+            ps.executeUpdate();
+            return true;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public List<Compra> listar() {
         
         List<Compra> lista = new ArrayList<>();
@@ -67,32 +86,31 @@ public class ComprasDAO {
         
         return lista;
     }
-
+    
     public boolean actualizar(Compra c) {
         // Solo actualizamos nombre, cantidad, precio y proveedor
         String sql = "UPDATE Compras SET NombreProducto=?, Cantidad=?, PrecioCompra=?, Proveedor=? WHERE IdCompra=?";
-
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        
+        try (Connection con = Conexion.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            
             ps.setString(1, c.getNombreProducto());
             ps.setInt(2, c.getCantidad());
             ps.setDouble(3, c.getPrecioCompra());
             ps.setString(4, c.getProveedor());
             ps.setInt(5, c.getIdCompra());
-
+            
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 System.out.println("No se actualizó ninguna fila. Revisa el IdCompra: " + c.getIdCompra());
             }
             return filas > 0;
-
+            
         } catch (Exception e) {
             System.out.println("Error actualizar compra: " + e.getMessage());
             return false;
         }
     }
-
+    
     public boolean eliminar(int idCompra) {
         
         String sql = "DELETE FROM Compras WHERE IdCompra = ?";

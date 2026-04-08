@@ -33,6 +33,26 @@ public class ProveedoresDAO {
             return false;
         }
     }
+    
+     public List<String> listarProveedoresNombres() {
+
+        List<String> lista = new ArrayList<>();
+        String sql = "SELECT nombre FROM proveedores";
+
+        try (Connection con = Conexion.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                lista.add(rs.getString("nombre"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
 
     public List<Proveedor> listarProveedores() {
 

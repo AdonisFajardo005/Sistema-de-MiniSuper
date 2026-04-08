@@ -4,14 +4,49 @@
  */
 package CapaPresentacion;
 
+import CapaDatos.ComprasDAO;
 import CapaModelo.Compra;
 import CapaModelo.Proveedor;
 import CapaModelo.Usuario;
 import CapaNegocio.ComprasService;
 import CapaNegocio.ProveedorService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
+import java.io.FileOutputStream;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import CapaModelo.Producto;
+import CapaModelo.Usuario;
+import CapaNegocio.ProductoService;
+import CapaNegocio.VentaService;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import java.awt.Desktop;
+import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 //PRUEBA PARA VER SI CARGA BIEN 
 // nueva prueba 
@@ -31,9 +66,10 @@ public class Compras extends javax.swing.JFrame {
         initComponents();
         this.usuarioLogueado = usuario;
         cargarProveedores();
-        cargarTabla();
+
         limpiarCampos();
-        txtId.setEditable(false);
+        inicializarTabla();
+        eventoActivado = true;
 
     }
 
@@ -49,24 +85,20 @@ public class Compras extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtPrecioCompra = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtProducto = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaProveedores = new javax.swing.JTable();
+        tablaCompras = new javax.swing.JTable();
         BtnVolverMenú = new javax.swing.JButton();
-        BtnModificar = new javax.swing.JButton();
-        BtnEliminar = new javax.swing.JButton();
+        BtnAgregar = new javax.swing.JButton();
         BtnRegistrar = new javax.swing.JButton();
-        txtId = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
         cbProveedor = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -86,12 +118,6 @@ public class Compras extends javax.swing.JFrame {
         jLabel2.setText("Gestión Compras");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 450, 43));
 
-        jLabel3.setBackground(new java.awt.Color(0, 102, 204));
-        jLabel3.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 102, 204));
-        jLabel3.setText("Id Compra: ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, 160, 50));
-
         jLabel5.setBackground(new java.awt.Color(153, 153, 153));
         jLabel5.setForeground(new java.awt.Color(153, 153, 153));
         jLabel5.setText("___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
@@ -102,32 +128,32 @@ public class Compras extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 102, 204));
         jLabel6.setText("Proveedor:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 340, 150, 30));
-        jPanel1.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 260, 35));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 150, 30));
+        jPanel1.add(txtProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 330, 260, 35));
 
         jLabel7.setBackground(new java.awt.Color(0, 102, 204));
         jLabel7.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 102, 204));
         jLabel7.setText("Nombre producto:");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 260, 43));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 250, 30));
 
-        tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id Compra", "Fecha", "Nombre Producto", "Cantidad", "Precio Compra", "Proveedor"
+                "Producto", "Cantidad", "Precio", "Proveedor"
             }
         ));
-        tablaProveedores.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaCompras.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaProveedoresMouseClicked(evt);
+                tablaComprasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablaProveedores);
+        jScrollPane1.setViewportView(tablaCompras);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 1270, 200));
 
@@ -142,52 +168,47 @@ public class Compras extends javax.swing.JFrame {
         });
         jPanel1.add(BtnVolverMenú, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 10, 183, -1));
 
-        BtnModificar.setBackground(new java.awt.Color(255, 204, 0));
-        BtnModificar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        BtnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnModificar.setText("Actualizar");
-        BtnModificar.addActionListener(new java.awt.event.ActionListener() {
+        BtnAgregar.setBackground(new java.awt.Color(0, 204, 0));
+        BtnAgregar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        BtnAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        BtnAgregar.setText("+ Agregar");
+        BtnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnModificarActionPerformed(evt);
+                BtnAgregarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 640, 190, -1));
+        jPanel1.add(BtnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 370, 183, -1));
 
-        BtnEliminar.setBackground(new java.awt.Color(255, 0, 0));
-        BtnEliminar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        BtnEliminar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnEliminar.setText("Eliminar");
-        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(BtnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 640, 183, -1));
-
-        BtnRegistrar.setBackground(new java.awt.Color(0, 204, 0));
+        BtnRegistrar.setBackground(new java.awt.Color(0, 102, 0));
         BtnRegistrar.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         BtnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        BtnRegistrar.setText("Registrar");
+        BtnRegistrar.setText("Registrar compra");
         BtnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 640, 183, -1));
-
-        txtId.setBackground(new java.awt.Color(204, 204, 204));
-        txtId.setText("No es necesario insertar un ID");
-        jPanel1.add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 260, 35));
+        jPanel1.add(BtnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1003, 640, 300, -1));
 
         jLabel8.setBackground(new java.awt.Color(0, 102, 204));
         jLabel8.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 102, 204));
         jLabel8.setText("Cantidad: ");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 370, -1, 30));
-        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 370, 260, 35));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 330, -1, 30));
+        jPanel1.add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 330, 260, 35));
 
         cbProveedor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(cbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 340, 260, 40));
+        cbProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbProveedorMouseClicked(evt);
+            }
+        });
+        cbProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbProveedorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cbProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 260, 40));
 
         jLabel9.setBackground(new java.awt.Color(0, 102, 204));
         jLabel9.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
@@ -195,26 +216,26 @@ public class Compras extends javax.swing.JFrame {
         jLabel9.setText("Precio Compra:");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 280, 230, 30));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo código icono.png"))); // NOI18N
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 255, 60, 60));
-
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/icono usuario.png"))); // NOI18N
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 325, -1, 60));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 40, 50));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo precio icono.png"))); // NOI18N
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 280, 40, 30));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo productos icono.png"))); // NOI18N
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 40, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 40, 30));
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/CapaPresentacion/Imagenes/Logo Cantidad.png"))); // NOI18N
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 370, -1, 30));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 330, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,6 +244,23 @@ public class Compras extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private boolean cargandoProveedores = true;
+    DefaultTableModel modelo;
+    private boolean eventoActivado = false;
+
+    private void inicializarTabla() {
+
+        modelo = new DefaultTableModel();
+
+        modelo.addColumn("Producto");
+        modelo.addColumn("Cantidad");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Proveedor");
+
+        tablaCompras.setModel(modelo);
+    }
+
 
     private void BtnVolverMenúActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverMenúActionPerformed
 
@@ -258,139 +296,279 @@ public class Compras extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnVolverMenúActionPerformed
 
-    private void BtnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModificarActionPerformed
-        // Supongamos que tu JTable se llama tblCompras
-        int fila = tablaProveedores.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar");
+
+    private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
+
+        // 🔥 VALIDAR proveedor correctamente
+        if (cbProveedor.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un proveedor válido");
             return;
         }
 
-// Tomamos el IdCompra de la columna que contiene el ID (suponiendo que es la columna 0)
-        int idCompra = Integer.parseInt(tablaProveedores.getValueAt(fila, 0).toString());
+        String producto = txtProducto.getText();
 
-// Creamos el objeto Compra con todos los datos del formulario
-        Compra c = new Compra();
-        c.setIdCompra(idCompra); // 🔥 Aquí estaba el problema
-        c.setNombreProducto(txtProducto.getText());
-        c.setCantidad(Integer.parseInt(txtCantidad.getText()));
-        c.setPrecioCompra(Double.parseDouble(txtPrecioCompra.getText()));
-        c.setProveedor(cbProveedor.getSelectedItem().toString());
-
-// Llamamos a actualizar
-        ComprasService service = new ComprasService();
-        boolean actualizado = service.actualizarCompra(c);
-        if (actualizado) {
-            JOptionPane.showMessageDialog(this, "Compra actualizada correctamente");
-            cargarTabla();
-            limpiarCampos();
-            ;
-        } else {
-            JOptionPane.showMessageDialog(this, "No se pudo actualizar la compra");
-        }
-    }//GEN-LAST:event_BtnModificarActionPerformed
-
-    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-
-        if (tablaProveedores.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una compra de la tabla");
+        if (producto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese nombre del producto");
             return;
         }
 
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro que desea eliminar esta compra?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION
-        );
+        int cantidad;
+        double precio;
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-
-            ComprasService service = new ComprasService();
-
-            Compra c = new Compra();
-            c.setIdCompra(Integer.parseInt(txtId.getText())); // 🔥 PRIMARY KEY
-
-            boolean eliminado = service.eliminarCompra(c.getIdCompra());
-
-            if (eliminado) {
-                JOptionPane.showMessageDialog(this, "Compra eliminada correctamente");
-
-                cargarTabla();
-                limpiarCampos();
-                // 🔥 volvemos a habilitar
-                // 🔥 refresca JTable
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al eliminar");
-            }
+        try {
+            cantidad = Integer.parseInt(txtCantidad.getText());
+            precio = Double.parseDouble(txtPrecioCompra.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Cantidad o precio inválido");
+            return;
         }
 
+        String proveedor = cbProveedor.getSelectedItem().toString();
 
-    }//GEN-LAST:event_BtnEliminarActionPerformed
+        modelo.addRow(new Object[]{
+            producto,
+            cantidad,
+            precio,
+            proveedor
+        });
+
+        txtProducto.setText("");
+        txtCantidad.setText("");
+        txtPrecioCompra.setText("");
+
+
+    }//GEN-LAST:event_BtnAgregarActionPerformed
 
     private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
 
-        try {
-            ComprasService service = new ComprasService();
-            Compra c = new Compra();
-
-            // 📅 Fecha actual automática
-            c.setFecha(new java.util.Date());
-
-            c.setNombreProducto(txtProducto.getText());
-            c.setCantidad(Integer.parseInt(txtCantidad.getText()));
-            c.setPrecioCompra(Double.parseDouble(txtPrecioCompra.getText()));
-
-            // 🔽 Proveedor desde ComboBox
-            c.setProveedor(cbProveedor.getSelectedItem().toString());
-
-            boolean registrado = service.insertar(c);
-
-            if (registrado) {
-                JOptionPane.showMessageDialog(this, "Compra registrada correctamente");
-                limpiarCampos();
-                cargarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo registrar la compra");
-            }
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error: Cantidad y Precio deben ser números válidos");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar la compra");
+        // 🔥 VALIDAR proveedor UNA SOLA VEZ
+        if (cbProveedor.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un proveedor válido");
+            return;
         }
 
+        // 🔥 VALIDAR que haya datos
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay productos para registrar");
+            return;
+        }
+
+        ComprasDAO dao = new ComprasDAO();
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+            Compra c = new Compra();
+
+            c.setNombreProducto(modelo.getValueAt(i, 0).toString());
+            c.setCantidad(Integer.parseInt(modelo.getValueAt(i, 1).toString()));
+            c.setPrecioCompra(Double.parseDouble(modelo.getValueAt(i, 2).toString()));
+            c.setProveedor(modelo.getValueAt(i, 3).toString());
+
+            dao.insertarCompras(c);
+        }
+
+        JOptionPane.showMessageDialog(this, "Compra registrada");
+
+        generarFacturaCompra();
+
+        // 🔥 LIMPIAR TODO
+        modelo.setRowCount(0);
+        cbProveedor.setEnabled(true);
+        cbProveedor.setSelectedIndex(0);
 
     }//GEN-LAST:event_BtnRegistrarActionPerformed
 
-    private void tablaProveedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProveedoresMouseClicked
-        int fila = tablaProveedores.getSelectedRow();
+    private void generarFacturaCompra() {
+
+        try {
+
+            // ===== RUTA (ARREGLADA) =====
+            String carpeta = "C:\\Users\\adoni\\OneDrive\\Documentos\\INGENIERIA\\ANÁLISIS Y DISEÑO DE SISTEMAS II\\RECIBOS PEDIDOS COMPRAS\\";
+            File directorio = new File(carpeta);
+
+            if (!directorio.exists()) {
+                directorio.mkdirs();
+            }
+
+            String nombreArchivo = "Compra_" + System.currentTimeMillis() + ".pdf";
+            String rutaCompleta = carpeta + nombreArchivo;
+
+            Document document = new Document(PageSize.A4, 36, 36, 54, 36);
+            PdfWriter.getInstance(document, new FileOutputStream(rutaCompleta));
+
+            document.open();
+
+            // ===== FUENTES =====
+            Font tituloFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
+            Font normalFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
+            Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font infoFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
+
+            // ===== ENCABEZADO =====
+            Paragraph titulo = new Paragraph("MINISUPER ZONA AZUL", tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            document.add(titulo);
+
+            Font subtituloFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+
+            Paragraph tipoDoc = new Paragraph("ORDEN DE PEDIDO DE COMPRA", subtituloFont);
+            tipoDoc.setAlignment(Element.ALIGN_CENTER);
+            document.add(tipoDoc);
+
+            Paragraph info = new Paragraph(
+                    "Cédula Jurídica: 3-101-748392\n"
+                    + "Dirección:Nicoya,Guanacaste, Costa Rica\n"
+                    + "Teléfono: 6358-1046\n",
+                    infoFont
+            );
+            info.setAlignment(Element.ALIGN_CENTER);
+            document.add(info);
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph compraInfo = new Paragraph(
+                    "Orden de Compra N°: " + System.currentTimeMillis() + "\n"
+                    + "Fecha: " + java.time.LocalDateTime.now() + "\n"
+                    + "Proveedor: " + cbProveedor.getSelectedItem() + "\n",
+                    boldFont
+            );
+            document.add(compraInfo);
+
+            document.add(new Paragraph("\n"));
+
+            // ===== TABLA =====
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.setWidthPercentage(100);
+            tabla.setSpacingBefore(10f);
+            tabla.setWidths(new float[]{4, 2, 2, 2});
+
+            String[] headers = {"Producto", "Cantidad", "Precio Compra", "Total"};
+
+            for (String header : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(header, boldFont));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                tabla.addCell(cell);
+            }
+
+            DefaultTableModel modelo = (DefaultTableModel) tablaCompras.getModel();
+
+            double totalGeneral = 0;
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+
+                if (modelo.getValueAt(i, 0) == null) {
+                    continue;
+                }
+
+                String producto = modelo.getValueAt(i, 0).toString();
+                int cantidad = Integer.parseInt(modelo.getValueAt(i, 1).toString());
+                double precio = Double.parseDouble(modelo.getValueAt(i, 2).toString());
+
+                double total = cantidad * precio;
+                totalGeneral += total;
+
+                tabla.addCell(producto);
+                tabla.addCell(String.valueOf(cantidad));
+                tabla.addCell("₡ " + precio);
+                tabla.addCell("₡ " + total);
+            }
+
+            document.add(tabla);
+            document.add(new Paragraph("\n"));
+
+            // ===== TOTAL =====
+            Paragraph totalP = new Paragraph(
+                    "TOTAL COMPRA: ₡ " + totalGeneral,
+                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
+            );
+            totalP.setAlignment(Element.ALIGN_RIGHT);
+
+            document.add(totalP);
+
+            document.add(new Paragraph("\n\nDocumento generado para control interno", normalFont));
+
+            document.close();
+
+            // ===== ABRIR PDF =====
+            File file = new File(rutaCompleta);
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            }
+
+            JOptionPane.showMessageDialog(this, "Compra generada en PDF correctamente");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al generar PDF de compra");
+        }
+    }
+    private void tablaComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaComprasMouseClicked
+        int fila = tablaCompras.getSelectedRow();
 
         if (fila >= 0) {
-            txtId.setText(tablaProveedores.getValueAt(fila, 0).toString());
+            // txtId.setText(tablaProveedores.getValueAt(fila, 0).toString());
 
-            txtProducto.setText(tablaProveedores.getValueAt(fila, 2).toString());
+            txtProducto.setText(tablaCompras.getValueAt(fila, 2).toString());
 
-            txtCantidad.setText(tablaProveedores.getValueAt(fila, 3).toString());
+            txtCantidad.setText(tablaCompras.getValueAt(fila, 3).toString());
 
-            txtPrecioCompra.setText(tablaProveedores.getValueAt(fila, 4).toString());
+            txtPrecioCompra.setText(tablaCompras.getValueAt(fila, 4).toString());
 
-            cbProveedor.setSelectedItem(tablaProveedores.getValueAt(fila, 5).toString());
+            cbProveedor.setSelectedItem(tablaCompras.getValueAt(fila, 5).toString());
 
-            txtId.setEditable(false);
-
+            // txtId.setEditable(false);
         }
-    }//GEN-LAST:event_tablaProveedoresMouseClicked
+    }//GEN-LAST:event_tablaComprasMouseClicked
+
+    private void cbProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbProveedorMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbProveedorMouseClicked
+
+    private void cbProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbProveedorActionPerformed
+
+        if (!eventoActivado) {
+            return;
+        }
+
+// 🔥 Evita que dispare al cargar
+        if (cargandoProveedores) {
+            return;
+        }
+
+        // 🔥 Evita que dispare si ya está bloqueado
+        if (!cbProveedor.isEnabled()) {
+            return;
+        }
+
+        // 🔥 Evita null
+        if (cbProveedor.getSelectedIndex() == 0) {
+            return;
+        }
+
+        int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea realizar el pedido con este proveedor?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            cbProveedor.setEnabled(false); // 🔒 bloquear
+        } else {
+            cbProveedor.setSelectedIndex(0); // limpiar selección
+        }
+    }//GEN-LAST:event_cbProveedorActionPerformed
 
     private void limpiarCampos() {
-        txtId.setText("No es necesario insertar un ID");
+        // txtId.setText("No es necesario insertar un ID");
         txtProducto.setText("");
 
         txtPrecioCompra.setText("");
         txtCantidad.setText("");
         cbProveedor.setSelectedIndex(0);
-        txtId.setForeground(Color.GRAY);
+        //txtId.setForeground(Color.GRAY);
 
     }
 
@@ -398,7 +576,7 @@ public class Compras extends javax.swing.JFrame {
         ComprasService service = new ComprasService();
         List<Compra> lista = service.listarCompra();
 
-        DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablaCompras.getModel();
         modelo.setRowCount(0); // limpia la tabla
 
         for (Compra c : lista) {
@@ -416,14 +594,21 @@ public class Compras extends javax.swing.JFrame {
 
     private void cargarProveedores() {
 
+        cargandoProveedores = true; // 🔥 evitar que dispare evento
+
         ProveedorService service = new ProveedorService();
         List<String> lista = service.listarNombres();
 
         cbProveedor.removeAllItems(); // limpiar antes
 
+        cbProveedor.addItem("Seleccione proveedor");
         for (String nombre : lista) {
             cbProveedor.addItem(nombre);
         }
+
+        cbProveedor.setSelectedIndex(0); // 👈 opcional: sin selección inicial
+
+        cargandoProveedores = false; // 🔥 ya terminó de cargar
     }
 
     /**
@@ -431,19 +616,16 @@ public class Compras extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnEliminar;
-    private javax.swing.JButton BtnModificar;
+    private javax.swing.JButton BtnAgregar;
     private javax.swing.JButton BtnRegistrar;
     private javax.swing.JButton BtnVolverMenú;
     private javax.swing.JComboBox<String> cbProveedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -451,9 +633,8 @@ public class Compras extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaProveedores;
+    private javax.swing.JTable tablaCompras;
     private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtPrecioCompra;
     private javax.swing.JTextField txtProducto;
     // End of variables declaration//GEN-END:variables

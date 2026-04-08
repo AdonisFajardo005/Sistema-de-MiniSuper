@@ -10,6 +10,7 @@ import CapaModelo.Usuario;
 import CapaNegocio.ProductoService;
 import CapaNegocio.VentaService;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -19,6 +20,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import java.awt.Desktop;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
@@ -454,18 +456,36 @@ public class Ventas extends javax.swing.JFrame {
             Font tituloFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
             Font normalFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
             Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font infoFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
 
-            // ===== ENCABEZADO =====
+            // ===== ENCABEZADO PROFESIONAL =====
             Paragraph titulo = new Paragraph("MINI SUPER ZONA AZUL", tituloFont);
             titulo.setAlignment(Element.ALIGN_CENTER);
             document.add(titulo);
 
-            Paragraph info = new Paragraph("Nicoya, Guanacaste\nTel: 6358-1046\n\n", normalFont);
-            info.setAlignment(Element.ALIGN_CENTER);
-            document.add(info);
+            Paragraph info1 = new Paragraph(
+                    "Cédula Jurídica: 3-101-748392\n"
+                    + "Dirección: Nicoya, Guanacaste, Costa Rica\n"
+                    + "Teléfono: 6358-1046\n",
+                    infoFont
+            );
+            info1.setAlignment(Element.ALIGN_CENTER);
+            document.add(info1);
 
-            document.add(new Paragraph("Factura N°: " + System.currentTimeMillis(), boldFont));
-            document.add(new Paragraph("Fecha: " + LocalDateTime.now(), normalFont));
+            LineSeparator ls = new LineSeparator();
+            document.add(new Chunk(ls));
+
+            document.add(new Paragraph("\n"));
+
+            Paragraph facturaInfo = new Paragraph(
+                    "Factura N°: " + System.currentTimeMillis() + "\n"
+                    + "Fecha: " + LocalDateTime.now() + "\n",
+                    boldFont
+            );
+
+            facturaInfo.setAlignment(Element.ALIGN_LEFT);
+            document.add(facturaInfo);
+
             document.add(new Paragraph("\n"));
 
             // ===== TABLA =====
@@ -522,8 +542,10 @@ public class Ventas extends javax.swing.JFrame {
             Paragraph ivaP = new Paragraph("IVA (13%): ₡ " + iva, normalFont);
             ivaP.setAlignment(Element.ALIGN_RIGHT);
 
-            Paragraph totalP = new Paragraph("TOTAL A PAGAR: ₡ " + totalFinal,
-                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD));
+            Paragraph totalP = new Paragraph(
+                    "TOTAL A PAGAR: ₡ " + totalFinal,
+                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)
+            );
             totalP.setAlignment(Element.ALIGN_RIGHT);
 
             document.add(subtotalP);
